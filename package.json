@@ -1,0 +1,45 @@
+{
+  "private": true,
+  "name": "starter",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@types/del": "^4.0.0",
+    "@types/fs-extra": "^8.0.0",
+    "@types/shelljs": "^0.8.5",
+    "concurrently": "^4.1.2",
+    "del": "^5.1.0",
+    "fs-extra": "^8.1.0",
+    "kill-port": "^1.5.2",
+    "shelljs": "^0.8.3",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  },
+  "scripts": {
+    "kill": "kill-port 8000 3000",
+    "clean": "ts-node scripts/cleanup.ts",
+    "postinstall": "ts-node scripts/postinstall.ts",
+    "build:ui": "yarn workspace @project/ui build",
+    "build:server": "yarn workspace @project/server build",
+    "build": "yarn clean && yarn build:ui && yarn build:server",
+    "debug:ui": "yarn workspace @project/ui start",
+    "debug:server": "yarn workspace @project/server debug",
+    "debug": "concurrently \"yarn debug:ui\" \"yarn debug:server\"",
+    "test:server": "yarn workspace @project/server test",
+    "test:ui": "yarn workspace @project/ui test",
+    "start": "yarn workspace @project/server start"
+  },
+  "dependencies": {},
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/ui",
+      "**/ui/**",
+      "**/server",
+      "**/server/**",
+      "**/core",
+      "**/core/**"
+    ]
+  }
+}

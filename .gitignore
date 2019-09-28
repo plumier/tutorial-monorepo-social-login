@@ -1,0 +1,9 @@
+node_modules
+coverage
+build
+yarn.lock
+*.js
+.env
+!jest.config.js
+!jest.config.debug.js
+.DS_Store
