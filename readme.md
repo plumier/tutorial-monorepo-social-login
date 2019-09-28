@@ -1,4 +1,7 @@
 # Monorepo Plumier React Starter
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/plumier/tutorial-monorepo-social-login.svg)](https://greenkeeper.io/)
+
 Starter project contains basic monorepo setup for Plumier and React. 
 
 ### Prerequisite
