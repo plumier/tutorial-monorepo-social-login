@@ -1,12 +1,13 @@
 import { domain, val } from "@plumier/core"
 import { collection, model } from "@plumier/mongoose"
+import reflect from "tinspector"
 
 
 export type UserRole = "Admin" | "User"
 
 export interface LoginUser {
-    userId:string,
-    role:UserRole
+    userId: string,
+    role: UserRole
 }
 
 @domain()
@@ -34,24 +35,26 @@ export class Todo extends DomainBase {
 export const TodoModel = model(Todo)
 
 @collection()
-export class User extends DomainBase {
-    constructor(
-        public name: string,
-        public picture:string,
-        public userName:string,
-        public password:string,
-        public role:UserRole,
-        public socialLogin:SocialLogin[]
-    ) { super() }
-}
-
-export const UserModel = model(User)
-
 export class SocialLogin extends DomainBase {
     constructor(
-        public socialId:string,
+        public socialId: string,
         public provider: "Facebook" | "Google" | "Github"
     ) { super() }
 }
 
 export const SocialLoginModel = model(SocialLogin)
+
+@collection()
+export class User extends DomainBase {
+    constructor(
+        public name: string,
+        public picture: string,
+        public userName: string,
+        public password: string,
+        public role: UserRole,
+        @reflect.array(SocialLogin)
+        public socialLogin: SocialLogin[]
+    ) { super() }
+}
+
+export const UserModel = model(User)
