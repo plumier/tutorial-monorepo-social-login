@@ -10,18 +10,20 @@
     "test": "jest"
   },
   "dependencies": {
-    "@plumier/serve-static": "^1.0.0-canary.31",
-    "@plumier/social-login": "^1.0.0-canary.31",
-    "@plumier/mongoose": "^1.0.0-canary.31",
-    "@project/core": "1.0.0",
+    "@plumier/mongoose": "1.0.0-canary.37",
+    "@plumier/serve-static": "1.0.0-canary.37",
+    "@plumier/social-login": "1.0.0-canary.37",
     "@types/dotenv": "^6.1.1",
+    "@types/jsonwebtoken": "^8.3.4",
     "dotenv": "^8.1.0",
-    "plumier": "^1.0.0-canary.31"
+    "jsonwebtoken": "^8.5.1",
+    "plumier": "1.0.0-canary.37"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/supertest": "^2.0.8",
     "jest": "^24.9.0",
+    "mongodb-memory-server-global": "^5.2.5",
     "supertest": "^4.0.2",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
