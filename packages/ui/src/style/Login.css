@@ -1,0 +1,81 @@
+.container{
+    margin: auto;
+    width: 100%;
+    text-align: center;
+}
+.input-form{
+    color: grey;
+    width: 230px;
+    margin: 3px;
+    padding: 7px 7px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.login{
+  width: 247px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 20px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.login-google{
+  width: 247px;
+  color: grey;
+  padding: 8px 20px;
+  margin: -15px 0px 0px 0px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.login-social{
+    width: 247px;
+    color: grey;
+    padding: 8px 20px;
+    margin: 5px 0px 0px 0px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+.center-container{
+    border-radius: 50px 50px 50px 50px;
+    box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.2);
+    margin: 170px;
+    height: 400px;
+    width: 400px;
+    background-color: white;
+    display: inline-block;
+}
+.form-container{
+    margin-top: 55px;
+}
+h2{
+    margin: 5px 0px 10px;
+    color: rgba(0,0,0,0.4);
+}
+.text-github{
+    color: black;
+    font-weight: bold;
+}
+.text-google{
+    font-weight: bold;
+}
+.text-google .blue{
+    color: #4285F4;
+}
+.text-google .yellow{
+    color: #F4B400;
+}
+.text-google .green{
+    color: #0F9D58;
+}
+.text-google .red{
+    color: #DB4437;
+}
+.text-facebook{
+    color: #3483eb;
+    font-weight: bold;
+}
