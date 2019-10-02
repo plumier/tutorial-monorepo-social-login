@@ -6,5 +6,6 @@ export const schemaGenerator: SchemaGenerator = def => {
         def.deleted = { type: Boolean, default: false }
     const schema = new mongoose.Schema(def, { timestamps: true })
     schema.set("toJSON", { virtuals: true, versionKey:false })
+    schema.set("toObject", { virtuals: true, versionKey:false })
     return schema
 }
