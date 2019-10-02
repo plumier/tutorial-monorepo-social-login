@@ -20,10 +20,8 @@ export class AuthController {
     async loginOrRegister<T>(login: SocialLoginStatus<T>, provider: Provider, transform: (data: T) => [string, Partial<User>]) {
         if (login.status === "Success") {
             const [socialId, user] = transform(login.data!)
-            const savedUser = await UserModel.findOne({
-                "socialLogin.provider": provider,
-                "socialLogin.socialId": socialId
-            })
+            const socialLogin = await SocialLoginModel.findOne({ provider: provider, socialId: socialId })
+            const savedUser = socialLogin && await UserModel.findOne({ socialLogin: socialLogin.id })
             let accessToken
             if (savedUser) {
                 accessToken = sign(<LoginUser>{ userId: savedUser.id, role: savedUser.role }, process.env.JWT_SECRET)
@@ -31,7 +29,6 @@ export class AuthController {
             else {
                 const socialLogin = await new SocialLoginModel(<SocialLogin>{ socialId, provider }).save()
                 const newUser = await new UserModel(<User>{ ...user!, role: "User", socialLogin: [socialLogin._id] }).save()
-                await newUser.save()
                 accessToken = sign(<LoginUser>{ userId: newUser.id, role: newUser.role }, process.env.JWT_SECRET)
             }
             return response.callbackView({ status: login.status, accessToken })

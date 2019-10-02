@@ -22,6 +22,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/supertest": "^2.0.8",
+    "faker": "^4.1.0",
     "jest": "^24.9.0",
     "mongodb-memory-server-global": "^5.2.5",
     "supertest": "^4.0.2",
