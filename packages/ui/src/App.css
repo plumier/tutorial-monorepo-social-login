@@ -33,7 +33,7 @@ tr:hover td.delete a {
   display: inline;
 }
 
-input[type=text] {
+.input-todo {
   font-size: 16px;
   box-sizing: border-box;
   width: 100%;

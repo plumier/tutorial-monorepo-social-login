@@ -28,7 +28,9 @@
     "test:ui": "yarn workspace @project/ui test",
     "start": "yarn workspace @project/server start"
   },
-  "dependencies": {},
+  "dependencies": {
+    
+  },
   "workspaces": {
     "packages": [
       "packages/*"

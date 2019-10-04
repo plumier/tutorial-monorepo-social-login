@@ -1,9 +1,8 @@
-import { val, route } from "plumier"
+import { val, route, authorize } from "plumier"
 import { Todo, TodoModel } from "../../../model/model";
 
-
 export class TodoController {
-
+    //@authorize.role('Admin')
     @route.get("")
     all(@val.optional() offset: number, @val.optional() limit: number) {
         return TodoModel.find({ deleted: false })

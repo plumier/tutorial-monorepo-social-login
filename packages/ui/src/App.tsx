@@ -49,7 +49,7 @@ function App() {
         <thead>
           <tr>
             <td colSpan={3}>
-              <input type="text" className="add-todo" placeholder="Something to do? type here..."
+              <input type="text" className="add-todo input-todo" placeholder="Something to do? type here..."
                 onChange={x => setTitle(x.currentTarget.value)}
                 onKeyUp={saveTodo} value={title} />
             </td>

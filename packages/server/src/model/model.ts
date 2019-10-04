@@ -48,7 +48,11 @@ export const SocialLoginModel = model(SocialLogin)
 export class User extends DomainBase {
     constructor(
         public name: string,
-        public picture: string,
+        @val.email()
+        @val.unique()
+        public email:string,
+        @val.optional()
+        public picture: string="",
         public userName: string,
         public password: string,
         public role: UserRole,

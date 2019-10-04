@@ -1,5 +1,6 @@
 import "../style/Login.css"
 import React from "react"
+import { Link } from "react-router-dom"
 
 function Login(){
     function Login(){
@@ -12,7 +13,7 @@ function Login(){
                     <h2>Login to To-Do</h2>
                     <input className="input-form" type="text" placeholder="E-mail"/><br/>
                     <input className="input-form" type="password" placeholder="Password"/><br/>
-                    <button className="login">Login</button><br/>
+                    <Link to="/home"><button className="login">Login</button></Link><br/>
                     <button className="login-google">
                         Login with
                         <span className="text-google">
@@ -26,8 +27,6 @@ function Login(){
                     </button><br/>
                     <button className="login-social">Login with <span className="text-facebook">Facebook</span></button><br/>
                     <button className="login-social">Login with <span className="text-github">Github</span></button><br/>
-
-                    
                 </div>
             </div>
         </div>
