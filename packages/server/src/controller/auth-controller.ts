@@ -9,7 +9,7 @@ import {
     SocialLoginStatus,
 } from "@plumier/social-login"
 import { sign } from "jsonwebtoken"
-import { bind, response, route, authorize, HttpStatusError } from "plumier"
+import { bind, response, route, authorize, HttpStatusError, val } from "plumier"
 import bcrypt from "bcrypt"
 
 import { LoginUser, SocialLogin, SocialLoginModel, User, UserModel } from "../model/model"
@@ -19,30 +19,28 @@ type Provider = "Github" | "Facebook" | "Google"
 export class AuthController {
     
     @authorize.public()
-    @route.post("login")
-    async login(email: string, password: string) {
+    @route.post()
+    async login(@val.email() email: string, password: string) {
         const user = await UserModel.findOne({ email })
         if (user && await bcrypt.compare(password,user.password)) {
             const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
             return { token }
         }
-        else throw new HttpStatusError(403, "Invalid username or password")
+        else throw new HttpStatusError(422, "Invalid username or password")
     }
 
     @authorize.public()
-    @route.post("register")
-    async register(name:string, email: string,password: string){
-        let user= await UserModel.findOne({email})
-        if(!user){
-            const encryptedPassword= await bcrypt.hash(password,10)
-            user= await UserModel.create({email: email,name: name,password: encryptedPassword,role:"User"})
-            const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
-            return {token}
-        }
-        else throw new HttpStatusError(403,"email already userd")
+    @route.post()
+    async register(name:string,@val.email()email: string,password: string){
+        
+        const encryptedPassword= await bcrypt.hash(password,10)
+        let usr=new User(name,email,"","",encryptedPassword,"User",[])
+        let user= await UserModel.create(usr)
+        const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
+        return {token}
     }
 
-    @route.post("")
+    @route.ignore()
     async loginOrRegister<T>(login: SocialLoginStatus<T>, provider: Provider, transform: (data: T) => [string, Partial<User>]) {
         if (login.status === "Success") {
             const [socialId, user] = transform(login.data!)

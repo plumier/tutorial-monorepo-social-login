@@ -1,13 +1,13 @@
 import "./App.css"
 
-import axios from "axios"
 import React, { useEffect, useState } from "react"
+import { AxiosInstance } from "./function/AxiosFunction"
 
 function App() {
   const [todoList, setTodoList] = useState<Todo[]>([])
   const [title, setTitle] = useState("")
   const refresh = () => {
-    axios.get<Todo[]>("/api/v1/todo")
+    AxiosInstance.get<Todo[]>("/api/v1/todo")
       .then(x => {
         if (x.status === 200) {
           setTodoList(x.data || [])
@@ -17,7 +17,7 @@ function App() {
   }
   const saveTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      axios.post("/api/v1/todo", { title })
+      AxiosInstance.post("/api/v1/todo", { title })
         .then(x => {
           refresh()
           setTitle("")
@@ -28,13 +28,13 @@ function App() {
   const deleteTodo = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const id = e.currentTarget.dataset.id
     if (!window.confirm("Are you sure?")) return
-    axios.delete(`/api/v1/todo/${id}`)
+    AxiosInstance.delete(`/api/v1/todo/${id}`)
       .then(() => refresh())
       .catch(x => console.error(x))
   }
   const checkTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const id = e.currentTarget.dataset.id
-    axios.put(`/api/v1/todo/${id}`, { completed: e.currentTarget.checked })
+    AxiosInstance.put(`/api/v1/todo/${id}`, { completed: e.currentTarget.checked })
       .then(() => refresh())
       .catch(x => console.error(x))
   }
@@ -45,6 +45,7 @@ function App() {
 
   return (
     <div className="container">
+      <h1>Welcome to To-do</h1>
       <table>
         <thead>
           <tr>
