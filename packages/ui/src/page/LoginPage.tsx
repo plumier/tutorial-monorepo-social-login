@@ -18,7 +18,6 @@ function Login(){
     checkLoginStatus()
     //login request to the server
     async function loginEmailPassword():Promise<void>{
-        setError("")
         if(email.length!=0&&password.length!=0)
         AxiosInstance.post("auth/login", { "email":email,"password":password })
         .then(x => {
