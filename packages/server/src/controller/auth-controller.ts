@@ -31,11 +31,10 @@ export class AuthController {
 
     @authorize.public()
     @route.post()
-    async register(name:string,@val.email()email: string,password: string){
-        
-        const encryptedPassword= await bcrypt.hash(password,10)
-        let usr=new User(name,email,"","",encryptedPassword,"User",[])
-        let user= await UserModel.create(usr)
+    async register(data:User){
+        const encryptedPassword= await bcrypt.hash(data.password,10)
+        data.password=encryptedPassword
+        let user= await UserModel.create(data)
         const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
         return {token}
     }

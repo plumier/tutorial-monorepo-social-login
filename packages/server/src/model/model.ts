@@ -1,4 +1,4 @@
-import { domain, val } from "@plumier/core"
+import { domain, val, authorize } from "@plumier/core"
 import { collection, model } from "@plumier/mongoose"
 import reflect from "tinspector"
 
@@ -55,9 +55,12 @@ export class User extends DomainBase {
         public picture: string="",
         public userName: string,
         public password: string,
-        public role: UserRole,
+        @val.optional()
+        @authorize.role("Admin")
+        public role: UserRole="User",
         @reflect.array(SocialLogin)
-        public socialLogin: SocialLogin[]
+        @val.optional()
+        public socialLogin: SocialLogin[]=[]
     ) { super() }
 }
 

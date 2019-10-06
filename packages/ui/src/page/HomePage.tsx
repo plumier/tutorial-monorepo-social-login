@@ -1,9 +1,9 @@
-import "./App.css"
+import "../style/Home.css"
 
 import React, { useEffect, useState } from "react"
-import { AxiosInstance } from "./function/AxiosFunction"
+import { AxiosInstance } from "../function/AxiosFunction"
 
-function App() {
+function Home() {
   const [todoList, setTodoList] = useState<Todo[]>([])
   const [title, setTitle] = useState("")
   const refresh = () => {
@@ -38,14 +38,20 @@ function App() {
       .then(() => refresh())
       .catch(x => console.error(x))
   }
-
+  const logOut=()=>{
+    localStorage.clear()
+    window.location.reload();
+  }
   useEffect(() => {
     refresh()
   }, [])
 
   return (
     <div className="container">
-      <h1>Welcome to To-do</h1>
+      <div className="header-container">
+        <div><h1>Welcome to To-do</h1></div>
+        <button className="logout-button" onClick={logOut}>Logout</button>
+      </div>
       <table>
         <thead>
           <tr>
@@ -74,4 +80,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

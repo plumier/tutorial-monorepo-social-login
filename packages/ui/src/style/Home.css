@@ -8,7 +8,6 @@
     width: auto;
   }
 }
-
 table {
   width: 100%;
 }
@@ -32,7 +31,6 @@ td.delete a {
 tr:hover td.delete a {
   display: inline;
 }
-
 .input-todo {
   font-size: 16px;
   box-sizing: border-box;
@@ -41,4 +39,21 @@ tr:hover td.delete a {
 }
 input[type=text]:focus {
   outline: none;
+}
+h1{
+  color: #DB4437;
+}
+.logout-button{
+  padding: 5px 10px;
+  color: grey;
+  font-weight: 600;
+  background-color: white;
+  border-radius: 5px;
+  border: 0px solid black;
+  margin: auto 0px auto auto;
+  cursor: pointer;
+}
+.header-container{
+  display: flex;
+  flex-direction: row;
 }

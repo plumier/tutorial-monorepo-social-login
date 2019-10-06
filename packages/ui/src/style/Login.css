@@ -79,3 +79,11 @@ h2{
     color: #3483eb;
     font-weight: bold;
 }
+.error-message-container{
+    width: 230px;
+    margin: auto;
+}
+.form-error-message{
+    color: #DB4437;
+    font-size: 13px;
+}
