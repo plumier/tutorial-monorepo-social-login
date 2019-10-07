@@ -52,15 +52,13 @@ export class User extends DomainBase {
         @val.unique()
         public email:string,
         @val.optional()
-        public picture: string="",
-        public userName: string,
+        public picture: string,
         public password: string,
-        @val.optional()
         @authorize.role("Admin")
-        public role: UserRole="User",
+        public role: UserRole,
         @reflect.array(SocialLogin)
         @val.optional()
-        public socialLogin: SocialLogin[]=[]
+        public socialLogin: SocialLogin[]
     ) { super() }
 }
 
