@@ -1,4 +1,4 @@
-.container{
+.login-container{
     margin: auto;
     width: 100%;
     text-align: center;
@@ -78,4 +78,12 @@ h2{
 .text-facebook{
     color: #3483eb;
     font-weight: bold;
+}
+.error-message-container{
+    width: 230px;
+    margin: auto;
+}
+.form-error-message{
+    color: #DB4437;
+    font-size: 13px;
 }

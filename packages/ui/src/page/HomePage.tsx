@@ -1,13 +1,13 @@
-import "./App.css"
+import "../style/Home.css"
 
-import axios from "axios"
 import React, { useEffect, useState } from "react"
+import Axios from "axios"
 
-function App() {
+function Home() {
   const [todoList, setTodoList] = useState<Todo[]>([])
   const [title, setTitle] = useState("")
   const refresh = () => {
-    axios.get<Todo[]>("/api/v1/todo")
+    Axios.get<Todo[]>("/api/v1/todo")
       .then(x => {
         if (x.status === 200) {
           setTodoList(x.data || [])
@@ -17,7 +17,7 @@ function App() {
   }
   const saveTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      axios.post("/api/v1/todo", { title })
+      Axios.post("/api/v1/todo", { title })
         .then(x => {
           refresh()
           setTitle("")
@@ -28,28 +28,35 @@ function App() {
   const deleteTodo = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const id = e.currentTarget.dataset.id
     if (!window.confirm("Are you sure?")) return
-    axios.delete(`/api/v1/todo/${id}`)
+    Axios.delete(`/api/v1/todo/${id}`)
       .then(() => refresh())
       .catch(x => console.error(x))
   }
   const checkTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const id = e.currentTarget.dataset.id
-    axios.put(`/api/v1/todo/${id}`, { completed: e.currentTarget.checked })
+    Axios.put(`/api/v1/todo/${id}`, { completed: e.currentTarget.checked })
       .then(() => refresh())
       .catch(x => console.error(x))
   }
-
+  const logOut = () => {
+    localStorage.clear()
+    window.location.reload();
+  }
   useEffect(() => {
     refresh()
   }, [])
 
   return (
     <div className="container">
+      <div className="header-container">
+        <div><h1>Welcome to To-do</h1></div>
+        <button className="logout-button" onClick={logOut}>Logout</button>
+      </div>
       <table>
         <thead>
           <tr>
             <td colSpan={3}>
-              <input type="text" className="add-todo" placeholder="Something to do? type here..."
+              <input type="text" className="add-todo input-todo" placeholder="Something to do? type here..."
                 onChange={x => setTitle(x.currentTarget.value)}
                 onKeyUp={saveTodo} value={title} />
             </td>
@@ -73,4 +80,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

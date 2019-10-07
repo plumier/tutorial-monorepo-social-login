@@ -1,18 +1,37 @@
 import "../style/Login.css"
-import React from "react"
+import React, { useState } from "react"
+import Axios from "axios"
+import App from "./HomePage"
 
-function Login(){
-    function Login(){
+function Login() {
+    //state
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [error, setError] = useState("")
+    const [loginStatus, setStatus] = useState(false)
 
+    //login request to the server
+    function loginEmailPassword() {
+        if (email.length != 0 && password.length != 0)
+            Axios.post("auth/login", { "email": email, "password": password })
+                .catch(x => {
+                    let err = typeof (x.response['data']['message']) != "object" ?
+                        x.response['data']['message'] :
+                        x.response['data']['message'][0]['messages']
+                    setError(err)
+                })
+        else
+            setError("Please fill the empty field")
     }
-    return(
-        <div className="container">
-            <div className="center-container">
+    return loginStatus ? (<App />) : (
+        <div className="login-container">
+            <div style={error == "" ? { height: 400 } : { height: 420 }} className="center-container">
                 <div className="form-container">
-                    <h2>Login to To-Do</h2>
-                    <input className="input-form" type="text" placeholder="E-mail"/><br/>
-                    <input className="input-form" type="password" placeholder="Password"/><br/>
-                    <button className="login">Login</button><br/>
+                    <h2>Login to Todo</h2>
+                    <input required onChange={(e) => setEmail(e.currentTarget.value)} value={email} className="input-form" type="email" placeholder="E-mail" /><br />
+                    <input required onChange={(e) => setPassword(e.currentTarget.value)} value={password} className="input-form" type="password" placeholder="Password" /><br />
+                    {error == "" ? "" : (<div className="error-message-container"><span className="form-error-message">*{error}!<br /></span></div>)}
+                    <button onClick={loginEmailPassword} className="login">Login</button><br />
                     <button className="login-google">
                         Login with
                         <span className="text-google">
@@ -23,11 +42,9 @@ function Login(){
                             <span className="green">l</span>
                             <span className="red">e</span>
                         </span>
-                    </button><br/>
-                    <button className="login-social">Login with <span className="text-facebook">Facebook</span></button><br/>
-                    <button className="login-social">Login with <span className="text-github">Github</span></button><br/>
-
-                    
+                    </button><br />
+                    <button className="login-social">Login with <span className="text-facebook">Facebook</span></button><br />
+                    <button className="login-social">Login with <span className="text-github">Github</span></button><br />
                 </div>
             </div>
         </div>

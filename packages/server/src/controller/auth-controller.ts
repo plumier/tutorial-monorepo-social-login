@@ -9,7 +9,8 @@ import {
     SocialLoginStatus,
 } from "@plumier/social-login"
 import { sign } from "jsonwebtoken"
-import { bind, response, route } from "plumier"
+import { bind, response, route, authorize, HttpStatusError, val, ActionResult } from "plumier"
+import bcrypt from "bcrypt"
 
 import { LoginUser, SocialLogin, SocialLoginModel, User, UserModel } from "../model/model"
 
@@ -17,6 +18,29 @@ type Provider = "Github" | "Facebook" | "Google"
 
 export class AuthController {
 
+    @authorize.public()
+    @route.post()
+    async login(@val.email() email: string, password: string) {
+        const user = await UserModel.findOne({ email })
+        if (user && await bcrypt.compare(password, user.password)) {
+            const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
+            return new ActionResult({ success: true })
+                .setHeader("set-cookie", `Authorization=${token}; HttpOnly`)
+        }
+        else throw new HttpStatusError(422, "Invalid username or password")
+    }
+
+    @authorize.public()
+    @route.post()
+    async register(data: User) {
+        data.password = await bcrypt.hash(data.password, 10)
+        let user = await UserModel.create(<User>{ ...data, role: "User" })
+        const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
+        return new ActionResult({ success: true })
+                .setHeader("set-cookie", `Authorization=${token}; HttpOnly`)
+    }
+
+    @route.ignore()
     async loginOrRegister<T>(login: SocialLoginStatus<T>, provider: Provider, transform: (data: T) => [string, Partial<User>]) {
         if (login.status === "Success") {
             const [socialId, user] = transform(login.data!)
