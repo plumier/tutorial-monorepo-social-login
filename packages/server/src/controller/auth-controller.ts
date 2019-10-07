@@ -32,8 +32,7 @@ export class AuthController {
     @authorize.public()
     @route.post()
     async register(data:User){
-        const encryptedPassword= await bcrypt.hash(data.password,10)
-        data.password=encryptedPassword
+        data.password=await bcrypt.hash(data.password,10)
         let user= await UserModel.create(data)
         const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
         return {token}
