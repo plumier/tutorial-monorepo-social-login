@@ -2,6 +2,7 @@ import "../style/Login.css"
 import React, { useState } from "react"
 import Axios from "axios"
 import App from "./HomePage"
+import { AxiosInstance } from "../function/AxiosFunction"
 
 function Login() {
     //state
@@ -13,7 +14,9 @@ function Login() {
     //login request to the server
     function loginEmailPassword() {
         if (email.length != 0 && password.length != 0)
-            Axios.post("auth/login", { "email": email, "password": password })
+            AxiosInstance.post("auth/login", { "email": email, "password": password }).then(res=>{
+                setStatus(true);
+            })
                 .catch(x => {
                     let err = typeof (x.response['data']['message']) != "object" ?
                         x.response['data']['message'] :
@@ -23,6 +26,8 @@ function Login() {
         else
             setError("Please fill the empty field")
     }
+    
+    
     return loginStatus ? (<App />) : (
         <div className="login-container">
             <div style={error == "" ? { height: 400 } : { height: 420 }} className="center-container">
