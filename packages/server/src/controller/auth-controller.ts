@@ -25,7 +25,7 @@ export class AuthController {
         if (user && await bcrypt.compare(password, user.password)) {
             const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
             return new ActionResult({ success: true })
-                .setHeader("set-cookie", `Authorization=${token}; HttpOnly`)
+                .setHeader("set-cookie", `Authorization=${token}; HttpOnly; Path=/`)
         }
         else throw new HttpStatusError(422, "Invalid username or password")
     }

@@ -14,6 +14,7 @@ function Login() {
     function loginEmailPassword() {
         if (email.length != 0 && password.length != 0)
             Axios.post("auth/login", { "email": email, "password": password })
+                .then(() => setStatus(true))
                 .catch(x => {
                     let err = typeof (x.response['data']['message']) != "object" ?
                         x.response['data']['message'] :
