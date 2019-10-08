@@ -23,7 +23,7 @@ export class AuthController {
     async login(@val.email() email: string, password: string) {
         const user = await UserModel.findOne({ email })
         if (user && await bcrypt.compare(password, user.password)) {
-            const token = "Bearer "+sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
+            const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
             return new ActionResult({ success: true })
                 .setHeader("set-cookie", `Authorization=${token}; HttpOnly; Path=/`)
         }
@@ -38,6 +38,13 @@ export class AuthController {
         const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
         return new ActionResult({ success: true })
                 .setHeader("set-cookie", `Authorization=${token}; HttpOnly; Path=/`)
+    }
+
+    @authorize.public()
+    @route.get()
+    async logout(){
+        return new ActionResult({success: true})
+                .setHeader("set-cookie",`Authorization=${null}; HttpOnly; Path=/`)
     }
 
     @route.ignore()

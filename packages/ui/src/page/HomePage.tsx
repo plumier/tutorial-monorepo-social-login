@@ -1,24 +1,28 @@
 import "../style/Home.css"
-
+import LoginPage from "./LoginPage"
 import React, { useEffect, useState } from "react"
 import Axios from "axios"
-import { AxiosInstance } from "../function/AxiosFunction"
 
 function Home() {
   const [todoList, setTodoList] = useState<Todo[]>([])
   const [title, setTitle] = useState("")
+  const [loginStatus,setLoginStatus]=useState(true)
   const refresh = () => {
-    AxiosInstance.get<Todo[]>("/api/v1/todo")
+    Axios.get<Todo[]>("/api/v1/todo")
       .then(x => {
         if (x.status === 200) {
           setTodoList(x.data || [])
         }
       })
-      .catch(x => console.error(x))
+      .catch(x => {
+        if(x.response.status==403){
+          setLoginStatus(false)
+        }
+      })
   }
   const saveTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      AxiosInstance.post("/api/v1/todo", { title })
+      Axios.post("/api/v1/todo", { title })
         .then(x => {
           refresh()
           setTitle("")
@@ -29,25 +33,26 @@ function Home() {
   const deleteTodo = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const id = e.currentTarget.dataset.id
     if (!window.confirm("Are you sure?")) return
-    AxiosInstance.delete(`/api/v1/todo/${id}`)
+    Axios.delete(`/api/v1/todo/${id}`)
       .then(() => refresh())
       .catch(x => console.error(x))
   }
   const checkTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const id = e.currentTarget.dataset.id
-    AxiosInstance.put(`/api/v1/todo/${id}`, { completed: e.currentTarget.checked })
+    Axios.put(`/api/v1/todo/${id}`, { completed: e.currentTarget.checked })
       .then(() => refresh())
       .catch(x => console.error(x))
   }
   const logOut = () => {
-    localStorage.clear()
-    window.location.reload();
+    Axios.get(`/auth/logout`)
+      .then(()=>{window.location.reload()})
+      .catch(x => console.error(x))
   }
   useEffect(() => {
     refresh()
   }, [])
 
-  return (
+  return !loginStatus ? (<LoginPage />) :(
     <div className="container">
       <div className="header-container">
         <div><h1>Welcome to To-do</h1></div>
