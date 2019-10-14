@@ -1,7 +1,8 @@
-import { val, route, authorize } from "plumier"
-import { Todo, TodoModel } from "../../../model/model";
+import { route, val } from "plumier"
 
-export class TodoController {
+import { Todo, TodoModel } from "../../../model/model"
+
+export class TodosController {
     @route.get("")
     all(@val.optional() offset: number, @val.optional() limit: number) {
         return TodoModel.find({ deleted: false })
@@ -11,11 +12,12 @@ export class TodoController {
 
     @route.get(":id")
     get(@val.mongoId() id: string) {
+        return TodoModel.findById(id)
     }
 
     @route.post("")
     save(data: Todo) {
-        return new TodoModel({ ...data, deleted: false }).save()
+        return new TodoModel({ ...data, completed:false, deleted: false }).save()
     }
 
     @route.put(":id")
