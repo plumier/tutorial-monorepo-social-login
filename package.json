@@ -26,6 +26,7 @@
     "debug": "concurrently \"yarn debug:ui\" \"yarn debug:server\"",
     "test:server": "yarn workspace @project/server test",
     "test:ui": "yarn workspace @project/ui test",
+    "test": "yarn test:server",
     "start": "yarn workspace @project/server start"
   },
   "dependencies": {
