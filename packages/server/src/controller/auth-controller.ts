@@ -15,7 +15,7 @@ import bcrypt from "bcrypt"
 import { LoginUser, SocialLogin, SocialLoginModel, User, UserModel } from "../model/model"
 
 type Provider = "Github" | "Facebook" | "Google"
-
+//example https://github.com/plumier/tutorial-todo-sql-backend/blob/master/test/todo-auth.spec.ts
 export class AuthController {
 
     @authorize.public()
