@@ -1,7 +1,8 @@
 import faker from "faker"
-import { Model, Document } from "mongoose"
-import { User, UserModel, SocialLoginModel } from "../../src/model/model"
-import { FacebookProfile, FacebookProvider, FacebookLoginStatus } from "@plumier/social-login"
+import { Document, Model } from "mongoose"
+
+import { SocialLoginModel, TodoModel, UserModel } from "../../src/model/model"
+import {facebook} from "./stub.social"
 
 class Stub<T>{
     constructor(protected model: Model<T & Document>, public random: () => Partial<T>) { }
@@ -20,8 +21,9 @@ class Stub<T>{
 
 const user = new Stub(UserModel, () => ({
     name: faker.name.findName(),
+    email: faker.internet.email(),
+    password: "123456",
     picture: faker.image.imageUrl(300, 300),
-    role: "User" as "User"
 }))
 
 const socialLogin = new Stub(SocialLoginModel, () => ({
@@ -29,19 +31,10 @@ const socialLogin = new Stub(SocialLoginModel, () => ({
     provider: "Facebook" as "Facebook"
 }))
 
-function facebook(opt?:Partial<FacebookProfile>){
-    const profile = (opt?:Partial<FacebookProfile>) => <FacebookProfile>({
-        id: faker.random.uuid(),
-        name: faker.name.findName(),
-        picture: {
-            data: {
-                url: faker.image.imageUrl()
-            }
-        }, 
-        ...opt
-    })
-    return new FacebookLoginStatus("Success", undefined, profile(opt))
-}
+const todo = new Stub(TodoModel, () => ({
+    title: faker.lorem.slug(5)
+}))
 
-const stub = { user, socialLogin, facebook }
+
+const stub = { user, socialLogin, facebook, todo }
 export default stub;

@@ -6,13 +6,13 @@
     "@types/del": "^4.0.0",
     "@types/fs-extra": "^8.0.0",
     "@types/shelljs": "^0.8.5",
-    "concurrently": "^4.1.2",
+    "concurrently": "^5.0.0",
     "del": "^5.1.0",
     "fs-extra": "^8.1.0",
-    "kill-port": "^1.5.2",
+    "kill-port": "^1.6.0",
     "shelljs": "^0.8.3",
     "ts-node": "^8.4.1",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.4"
   },
   "scripts": {
     "kill": "kill-port 8000 3000",
@@ -26,6 +26,7 @@
     "debug": "concurrently \"yarn debug:ui\" \"yarn debug:server\"",
     "test:server": "yarn workspace @project/server test",
     "test:ui": "yarn workspace @project/ui test",
+    "test": "yarn test:server",
     "start": "yarn workspace @project/server start"
   },
   "dependencies": {

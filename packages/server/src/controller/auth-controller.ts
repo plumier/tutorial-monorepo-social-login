@@ -12,36 +12,19 @@ import { sign } from "jsonwebtoken"
 import { bind, response, route, authorize, HttpStatusError, val, ActionResult } from "plumier"
 import bcrypt from "bcrypt"
 
-import { LoginUser, SocialLogin, SocialLoginModel, User, UserModel } from "../model/model"
+import { LoginUser, SocialLogin, SocialLoginModel, User, UserModel, UserRole } from "../model/model"
 
 type Provider = "Github" | "Facebook" | "Google"
 
 export class AuthController {
 
-    @authorize.public()
-    @route.post()
-    async login(@val.email() email: string, password: string) {
-        const user = await UserModel.findOne({ email })
-        if (user && await bcrypt.compare(password, user.password)) {
-            const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
-            return new ActionResult({ success: true })
-                .setHeader("set-cookie", `Authorization=${token}; HttpOnly`)
-        }
-        else throw new HttpStatusError(422, "Invalid username or password")
-    }
-
-    @authorize.public()
-    @route.post()
-    async register(data: User) {
-        data.password = await bcrypt.hash(data.password, 10)
-        let user = await UserModel.create(<User>{ ...data, role: "User" })
-        const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
-        return new ActionResult({ success: true })
-                .setHeader("set-cookie", `Authorization=${token}; HttpOnly`)
+    @route.ignore()
+    private createAuthCookie(token: string) {
+        return `Authorization=${token}; HttpOnly; SameSite=Strict`
     }
 
     @route.ignore()
-    async loginOrRegister<T>(login: SocialLoginStatus<T>, provider: Provider, transform: (data: T) => [string, Partial<User>]) {
+    private async loginOrRegister<T>(login: SocialLoginStatus<T>, provider: Provider, transform: (data: T) => [string, Partial<User>]) {
         if (login.status === "Success") {
             const [socialId, user] = transform(login.data!)
             const socialLogin = await SocialLoginModel.findOne({ provider: provider, socialId: socialId })
@@ -56,11 +39,28 @@ export class AuthController {
                 accessToken = sign(<LoginUser>{ userId: newUser.id, role: newUser.role }, process.env.JWT_SECRET)
             }
             return response.callbackView({ status: login.status, accessToken })
+                .setHeader("set-cookie", this.createAuthCookie(accessToken))
         }
         else
             return response.callbackView({ status: login.status })
     }
 
+    @authorize.public()
+    @route.post()
+    async login(@val.email() email: string, password: string) {
+        const user = await UserModel.findOne({ email })
+        if (user && await bcrypt.compare(password, user.password)) {
+            const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
+            return new ActionResult({ accessToken: token })
+                .setHeader("set-cookie", this.createAuthCookie(token))
+        }
+        else throw new HttpStatusError(422, "Invalid username or password")
+    }
+
+    async logout() {
+        return new ActionResult()
+            .setHeader("set-cookie", this.createAuthCookie(""))
+    }
 
     @oAuthCallback(new FacebookProvider(process.env.FACEBOOK_CLIENT_ID, process.env.FACEBOOK_SECRET))
     async facebook(@bind.loginStatus() login: FacebookLoginStatus) {

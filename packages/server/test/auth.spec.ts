@@ -1,12 +1,10 @@
-import { MongoMemoryServer } from "mongodb-memory-server-global"
-import { createApp } from "../src/app"
-import { AuthController } from "../src/controller/auth-controller";
-import { FacebookLoginStatus, FacebookProfile } from "@plumier/social-login";
-import Mongoose from "mongoose";
-import { UserModel, SocialLoginModel, SocialLogin, User, LoginUser } from "../src/model/model";
-import stub from "./helper/stub";
-import { verify } from "jsonwebtoken";
-import { ActionResult } from "plumier";
+import { verify } from "jsonwebtoken"
+import { ActionResult } from "plumier"
+
+import { AuthController } from "../src/controller/auth-controller"
+import { LoginUser } from "../src/model/model"
+import { appStub, AppStub } from "./helper/stub.app"
+import stub from "./helper/stub"
 
 function getLoginUserFromCallback(result: ActionResult) {
     const reg = result.body.match(/"accessToken":"(.*)"/)[1]
@@ -14,24 +12,14 @@ function getLoginUserFromCallback(result: ActionResult) {
 }
 
 describe("Social Login", () => {
-    let mongo: MongoMemoryServer;
+    let harness:AppStub
+    beforeEach(async () => harness = await appStub())
+    afterEach(async () => await harness.stop())
 
-    beforeEach(async () => {
-        //use in-memory mongodb server for data isolation
-        mongo = new MongoMemoryServer()
-        const uri = await mongo.getConnectionString()
-        //createApp called to trigger mongoose model generator
-        await createApp({ mongoDbUri: uri, mode: "production" })
-    })
-
-    afterEach(async () => {
-        await Mongoose.disconnect()
-        await mongo.stop()
-    })
 
     it("Should able to login", async () => {
         const social = await stub.socialLogin.db()
-        await stub.user.db({ socialLogin: [social._id] })
+        await stub.user.db({ socialLogin: [social._id], role: "User" })
         const controller = new AuthController()
         const result = await controller.facebook(stub.facebook({ id: social.socialId }))
         const login = getLoginUserFromCallback(result)
