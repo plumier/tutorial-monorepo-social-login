@@ -17,7 +17,7 @@ export class TodosController {
 
     @route.post("")
     save(data: Todo) {
-        return new TodoModel({ ...data, completed:false, deleted: false }).save()
+        return new TodoModel({ ...data, completed:false }).save()
     }
 
     @route.put(":id")

@@ -19,7 +19,7 @@ describe("Social Login", () => {
 
     it("Should able to login", async () => {
         const social = await stub.socialLogin.db()
-        await stub.user.db({ socialLogin: [social._id] })
+        await stub.user.db({ socialLogin: [social._id], role: "User" })
         const controller = new AuthController()
         const result = await controller.facebook(stub.facebook({ id: social.socialId }))
         const login = getLoginUserFromCallback(result)

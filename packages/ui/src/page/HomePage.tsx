@@ -39,7 +39,6 @@ function Home() {
       .catch(x => console.error(x))
   }
   const logOut = () => {
-    localStorage.clear()
     window.location.reload();
   }
   useEffect(() => {

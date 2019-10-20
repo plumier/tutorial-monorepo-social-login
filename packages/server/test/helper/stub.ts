@@ -21,8 +21,9 @@ class Stub<T>{
 
 const user = new Stub(UserModel, () => ({
     name: faker.name.findName(),
+    email: faker.internet.email(),
+    password: "123456",
     picture: faker.image.imageUrl(300, 300),
-    role: "User" as "User"
 }))
 
 const socialLogin = new Stub(SocialLoginModel, () => ({
