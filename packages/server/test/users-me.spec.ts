@@ -4,10 +4,13 @@ import supertest = require("supertest")
 
 import stub from "./helper/stub"
 import { AppStub, appStub } from "./helper/stub.app"
+import { HttpMethod } from "plumier"
+
+const userUrl = `/api/v1/users/me`
 
 async function userByIdUrl() {
     const user = await stub.user.db()
-    return { url: `/api/v1/users/me`, id: user.id, owner: {id:user.id, role: user.role} }
+    return { url: userUrl, id: user.id, owner: {id:user.id, role: user.role} }
 }
 
 describe("Users", () => {
@@ -82,6 +85,90 @@ describe("Users", () => {
                 const saved = await stub.user.get(id)
                 expect(saved!.name).toBe(body.name)
                 expect(saved!.id).toBe(body.id)
+            })
+        })
+    })
+
+    
+    describe("Authorization", () => {
+
+        for (const method of ["put", "patch"] as HttpMethod[]) {
+            describe(`${method.toUpperCase()} /api/v1/users/me`, () => {
+                it("Should accessible by Admin", async () => {
+                    const { url } = await userByIdUrl()
+                    await supertest(app)
+                    [method](url)
+                        .send(stub.user.random())
+                        .byAdmin()
+                        .expect(200)
+                })
+
+                it("Should accessible by Owner", async () => {
+                    const { url, id } = await userByIdUrl()
+                    await supertest(app)
+                    [method](url)
+                        .send(stub.user.random())
+                        .by({ id, role: "User" })
+                        .expect(200)
+                })
+
+                it("Should not accessible by public", async () => {
+                    const { url } = await userByIdUrl()
+                    await supertest(app)
+                    [method](url)
+                        .send(stub.user.random())
+                        .expect(403)
+                })
+            })
+        }
+
+        describe("DELETE /api/v1/users/me", () => {
+            it("Should accessible by Admin", async () => {
+                const { url } = await userByIdUrl()
+                await supertest(app)
+                    .delete(url)
+                    .byAdmin()
+                    .expect(200)
+            })
+
+            it("Should accessible by Owner", async () => {
+                const { url, owner } = await userByIdUrl()
+                await supertest(app)
+                    .delete(url)
+                    .by(owner)
+                    .expect(200)
+            })
+
+            it("Should not accessible by public", async () => {
+                const { url } = await userByIdUrl()
+                await supertest(app)
+                    .delete(url)
+                    .expect(403)
+            })
+        })
+
+        describe("GET /api/v1/users/me", () => {
+            it("Should accessible by Admin", async () => {
+                const { url } = await userByIdUrl()
+                await supertest(app)
+                    .get(url)
+                    .byAdmin()
+                    .expect(200)
+            })
+
+            it("Should accessible by Owner", async () => {
+                const { url, id } = await userByIdUrl()
+                await supertest(app)
+                    .get(url)
+                    .by({ id, role: "User" })
+                    .expect(200)
+            })
+
+            it("Should not accessible by public", async () => {
+                const { url } = await userByIdUrl()
+                await supertest(app)
+                    .get(url)
+                    .expect(403)
             })
         })
     })
