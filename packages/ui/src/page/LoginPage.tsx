@@ -1,53 +1,41 @@
 import "../style/Login.css"
-import React, { useState } from "react"
-import Axios from "axios"
-import App from "./HomePage"
 
-function Login() {
-    //state
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState("")
-    const [loginStatus, setStatus] = useState(false)
+import Axios, { AxiosError } from "axios"
+import React, { FormEventHandler, useState } from "react"
+import { useHistory } from "react-router"
+import * as popup from "./popup"
 
-    //login request to the server
-    function loginEmailPassword() {
-        if (email.length != 0 && password.length != 0)
-            Axios.post("auth/login", { "email": email, "password": password })
-                .catch(x => {
-                    let err = typeof (x.response['data']['message']) != "object" ?
-                        x.response['data']['message'] :
-                        x.response['data']['message'][0]['messages']
-                    setError(err)
-                })
-        else
-            setError("Please fill the empty field")
+export default function Login() {
+    const history = useHistory()
+    const [error, setError] = useState<string | undefined>()
+
+    const onSubmit: FormEventHandler<HTMLFormElement> = e => {
+        e.preventDefault()
+        const data = new FormData(e.currentTarget)
+        Axios.post("/auth/login", data)
+            .then(x => {
+                setError(undefined)
+                history.replace("/home")
+            })
+            .catch((e: AxiosError) => {
+                if (!e.response) return console.log(e)
+                if (e.response.status === 422)
+                    return setError("Invalid email or password")
+                console.log(e)
+            })
+
     }
-    return loginStatus ? (<App />) : (
-        <div className="login-container">
-            <div style={error == "" ? { height: 400 } : { height: 420 }} className="center-container">
-                <div className="form-container">
-                    <h2>Login to Todo</h2>
-                    <input required onChange={(e) => setEmail(e.currentTarget.value)} value={email} className="input-form" type="email" placeholder="E-mail" /><br />
-                    <input required onChange={(e) => setPassword(e.currentTarget.value)} value={password} className="input-form" type="password" placeholder="Password" /><br />
-                    {error == "" ? "" : (<div className="error-message-container"><span className="form-error-message">*{error}!<br /></span></div>)}
-                    <button onClick={loginEmailPassword} className="login">Login</button><br />
-                    <button className="login-google">
-                        Login with
-                        <span className="text-google">
-                            <span className="blue"> G</span>
-                            <span className="red">o</span>
-                            <span className="yellow">o</span>
-                            <span className="blue">g</span>
-                            <span className="green">l</span>
-                            <span className="red">e</span>
-                        </span>
-                    </button><br />
-                    <button className="login-social">Login with <span className="text-facebook">Facebook</span></button><br />
-                    <button className="login-social">Login with <span className="text-github">Github</span></button><br />
-                </div>
-            </div>
-        </div>
-    )
+
+    return <div className="login-container">
+        <form onSubmit={onSubmit}>
+            <input name="email" type="email" placeholder="Email" />
+            <input name="password" type="password" placeholder="Password" />
+            {!!error ? (<div className="error">{error}</div>) : ""}
+            <button type="submit">Login</button>
+            <a href="#" onClick={() => popup.google()}>Google</a>
+            <a href="#" onClick={() => popup.facebook()}>Facebook</a>
+            <a href="#" onClick={() => popup.github()}>Github</a>
+            <a href="#">Register</a>
+        </form>
+    </div>
 }
-export default Login;

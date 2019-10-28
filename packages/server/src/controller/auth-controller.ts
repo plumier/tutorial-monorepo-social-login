@@ -16,13 +16,42 @@ import { LoginUser, SocialLogin, SocialLoginModel, User, UserModel, UserRole } f
 
 type Provider = "Github" | "Facebook" | "Google"
 
+function createAuthCookie(token: string) {
+    return `Authorization=${token}; HttpOnly; SameSite=Strict`
+}
+
+@authorize.public()
 export class AuthController {
 
-    @route.ignore()
-    private createAuthCookie(token: string) {
-        return `Authorization=${token}; HttpOnly; SameSite=Strict`
+    // this endpoint used to exchange token with cookie
+    // usually used by social login
+    async authorize(@bind.user() user: LoginUser) {
+        const token = sign(<LoginUser>{ userId: user.userId, role: user.role }, process.env.JWT_SECRET)
+        return new ActionResult({ accessToken: token })
+            .setHeader("set-cookie", createAuthCookie(token))
     }
 
+    @route.post()
+    async login(@val.email() email: string, password: string) {
+        const user = await UserModel.findOne({ email })
+        if (user && await bcrypt.compare(password, user.password)) {
+            const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
+            return new ActionResult({ accessToken: token })
+                .setHeader("set-cookie", createAuthCookie(token))
+        }
+        else throw new HttpStatusError(422, "Invalid username or password")
+    }
+
+    async logout() {
+        return new ActionResult()
+            .setHeader("set-cookie", createAuthCookie(""))
+    }
+}
+
+
+@route.root("/auth")
+@authorize.public()
+export class SocialLoginController {
     @route.ignore()
     private async loginOrRegister<T>(login: SocialLoginStatus<T>, provider: Provider, transform: (data: T) => [string, Partial<User>]) {
         if (login.status === "Success") {
@@ -39,27 +68,10 @@ export class AuthController {
                 accessToken = sign(<LoginUser>{ userId: newUser.id, role: newUser.role }, process.env.JWT_SECRET)
             }
             return response.callbackView({ status: login.status, accessToken })
-                .setHeader("set-cookie", this.createAuthCookie(accessToken))
+                .setHeader("set-cookie", createAuthCookie(accessToken))
         }
         else
             return response.callbackView({ status: login.status })
-    }
-
-    @authorize.public()
-    @route.post()
-    async login(@val.email() email: string, password: string) {
-        const user = await UserModel.findOne({ email })
-        if (user && await bcrypt.compare(password, user.password)) {
-            const token = sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
-            return new ActionResult({ accessToken: token })
-                .setHeader("set-cookie", this.createAuthCookie(token))
-        }
-        else throw new HttpStatusError(422, "Invalid username or password")
-    }
-
-    async logout() {
-        return new ActionResult()
-            .setHeader("set-cookie", this.createAuthCookie(""))
     }
 
     @oAuthCallback(new FacebookProvider(process.env.FACEBOOK_CLIENT_ID, process.env.FACEBOOK_SECRET))

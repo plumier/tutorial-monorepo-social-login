@@ -1,9 +1,9 @@
 import "../style/Home.css"
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, MouseEventHandler, KeyboardEventHandler, ChangeEventHandler } from "react"
 import Axios from "axios"
 
-function Home() {
+export default function Home() {
   const [todoList, setTodoList] = useState<Todo[]>([])
   const [title, setTitle] = useState("")
   const refresh = () => {
@@ -15,7 +15,7 @@ function Home() {
       })
       .catch(x => console.error(x))
   }
-  const saveTodo = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const saveTodo:KeyboardEventHandler = e => {
     if (e.key === "Enter") {
       Axios.post("/api/v1/todos", { title })
         .then(x => {
@@ -25,14 +25,14 @@ function Home() {
         .catch(x => console.error(x))
     }
   }
-  const deleteTodo = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const deleteTodo:MouseEventHandler<HTMLAnchorElement> = e => {
     const id = e.currentTarget.dataset.id
     if (!window.confirm("Are you sure?")) return
     Axios.delete(`/api/v1/todos/${id}`)
       .then(() => refresh())
       .catch(x => console.error(x))
   }
-  const checkTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const checkTodo:ChangeEventHandler<HTMLInputElement> = e => {
     const id = e.currentTarget.dataset.id
     Axios.put(`/api/v1/todos/${id}`, { completed: e.currentTarget.checked })
       .then(() => refresh())
@@ -78,5 +78,3 @@ function Home() {
     </div>
   );
 }
-
-export default Home;

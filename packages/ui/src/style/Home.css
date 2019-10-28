@@ -31,15 +31,7 @@ td.delete a {
 tr:hover td.delete a {
   display: inline;
 }
-.input-todo {
-  font-size: 16px;
-  box-sizing: border-box;
-  width: 100%;
-  border: none;
-}
-input[type=text]:focus {
-  outline: none;
-}
+
 h1{
   color: #DB4437;
 }

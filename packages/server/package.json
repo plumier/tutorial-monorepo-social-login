@@ -10,17 +10,17 @@
     "test": "jest"
   },
   "dependencies": {
-    "@plumier/jwt": "1.0.0-canary.41",
-    "@plumier/mongoose": "1.0.0-canary.41",
-    "@plumier/serve-static": "1.0.0-canary.41",
-    "@plumier/social-login": "1.0.0-canary.41",
+    "@plumier/jwt": "1.0.0-beta.10",
+    "@plumier/mongoose": "1.0.0-beta.10",
+    "@plumier/serve-static": "1.0.0-beta.10",
+    "@plumier/social-login": "1.0.0-beta.10",
     "@types/bcrypt": "^3.0.0",
     "@types/dotenv": "^6.1.1",
     "@types/jsonwebtoken": "^8.3.4",
     "bcrypt": "^3.0.6",
     "dotenv": "^8.1.0",
     "jsonwebtoken": "^8.5.1",
-    "plumier": "1.0.0-canary.41"
+    "plumier": "1.0.0-beta.10"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
