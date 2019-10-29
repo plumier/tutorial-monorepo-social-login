@@ -17,7 +17,7 @@ import { LoginUser, SocialLogin, SocialLoginModel, User, UserModel, UserRole } f
 type Provider = "Github" | "Facebook" | "Google"
 
 function createAuthCookie(token: string) {
-    return `Authorization=${token}; HttpOnly; SameSite=Strict`
+    return `Authorization=${token}; HttpOnly; SameSite=Strict; Path=/`
 }
 
 @authorize.public()
@@ -25,7 +25,8 @@ export class AuthController {
 
     // this endpoint used to exchange token with cookie
     // usually used by social login
-    async authorize(@bind.user() user: LoginUser) {
+    @route.post()
+    async exchange(@bind.user() user: LoginUser) {
         const token = sign(<LoginUser>{ userId: user.userId, role: user.role }, process.env.JWT_SECRET)
         return new ActionResult({ accessToken: token })
             .setHeader("set-cookie", createAuthCookie(token))

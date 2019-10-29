@@ -1,4 +1,6 @@
 import qs from "querystring"
+import Axios from "axios";
+
 
 function popup(url: string, w = 600, h = 500) {
     const y = window.top.outerHeight / 2 + window.top.screenY - (h / 2);

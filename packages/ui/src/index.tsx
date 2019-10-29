@@ -12,7 +12,3 @@ ReactDOM.render(<App />, document.getElementById('root'));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
-
-function onLogin(message:any){
-    console.log("******** TOKEN", message)
-}

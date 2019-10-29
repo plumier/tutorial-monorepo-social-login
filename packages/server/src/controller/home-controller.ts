@@ -7,6 +7,6 @@ export class HomeController {
     @route.get("/")
     @route.get("/login")
     index(){
-        return response.file(join(__dirname, "../../public/index.html"))
+        return response.file(join(__dirname, "../../../ui/build/index.html"))
     }
 }
