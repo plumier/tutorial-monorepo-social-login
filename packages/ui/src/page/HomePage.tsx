@@ -3,9 +3,11 @@ import "../style/Home.css"
 import React, { useEffect, useState, MouseEventHandler, KeyboardEventHandler, ChangeEventHandler } from "react"
 import Axios from "axios"
 import session from "./session"
+import { url } from "inspector"
 
 export default function Home() {
   const [todoList, setTodoList] = useState<Todo[]>([])
+  const [user, setUser] = useState<User>({} as User)
   const [title, setTitle] = useState("")
   const refresh = () => {
     Axios.get<Todo[]>("/api/v1/todos")
@@ -13,6 +15,13 @@ export default function Home() {
         if (x.status === 200) {
           setTodoList(x.data || [])
         }
+      })
+      .catch(x => console.error(x))
+  }
+  const loadUser = () => {
+    Axios.get<User>("/api/v1/users/me")
+      .then(x => {
+        setUser(x.data)
       })
       .catch(x => console.error(x))
   }
@@ -48,24 +57,25 @@ export default function Home() {
       .catch(e => console.log(e))
   }
   useEffect(() => {
+    loadUser()
     refresh()
   }, [])
 
   return (
     <div className="container">
       <div className="header-container">
-        <button className="logout-button" onClick={logOut}>Logout</button>
+        <input type="text" className="input-todo" placeholder="Something to do? type here..."
+          onChange={x => setTitle(x.currentTarget.value)}
+          onKeyUp={saveTodo} value={title} />
+        <div className="user">
+          <div className="avatar" style={{ backgroundImage: `url(${user.picture})` }}></div>
+          <div className="dropdown">
+            <div className="item">{user.name}</div>
+            <a href="#" className="item" onClick={logOut}>Logout</a>
+          </div>
+        </div>
       </div>
       <table>
-        <thead>
-          <tr>
-            <td colSpan={3}>
-              <input type="text" className="input-todo" placeholder="Something to do? type here..."
-                onChange={x => setTitle(x.currentTarget.value)}
-                onKeyUp={saveTodo} value={title} />
-            </td>
-          </tr>
-        </thead>
         <tbody>
           {
             todoList.map(x => <tr key={x.id}>

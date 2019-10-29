@@ -8,11 +8,12 @@ import {
     oAuthCallback,
     SocialLoginStatus,
 } from "@plumier/social-login"
-import { sign } from "jsonwebtoken"
-import { bind, response, route, authorize, HttpStatusError, val, ActionResult } from "plumier"
 import bcrypt from "bcrypt"
+import { sign } from "jsonwebtoken"
+import { ActionResult, authorize, bind, HttpStatusError, response, route, val } from "plumier"
 
-import { LoginUser, SocialLogin, SocialLoginModel, User, UserModel, UserRole } from "../model/model"
+import { LoginUser, User, UserModel } from "../model/model"
+
 
 type Provider = "Github" | "Facebook" | "Google"
 
@@ -57,15 +58,13 @@ export class SocialLoginController {
     private async loginOrRegister<T>(login: SocialLoginStatus<T>, provider: Provider, transform: (data: T) => [string, Partial<User>]) {
         if (login.status === "Success") {
             const [socialId, user] = transform(login.data!)
-            const socialLogin = await SocialLoginModel.findOne({ provider: provider, socialId: socialId })
-            const savedUser = socialLogin && await UserModel.findOne({ socialLogin: socialLogin.id })
+            const savedUser = await UserModel.findOne({ provider, socialId })
             let accessToken
             if (savedUser) {
                 accessToken = sign(<LoginUser>{ userId: savedUser.id, role: savedUser.role }, process.env.JWT_SECRET)
             }
             else {
-                const socialLogin = await new SocialLoginModel(<SocialLogin>{ socialId, provider }).save()
-                const newUser = await new UserModel(<User>{ ...user!, role: "User", socialLogin: [socialLogin._id] }).save()
+                const newUser = await new UserModel(<User>{ ...user!, role: "User", provider, socialId }).save()
                 accessToken = sign(<LoginUser>{ userId: newUser.id, role: newUser.role }, process.env.JWT_SECRET)
             }
             return response.callbackView({ status: login.status, accessToken })

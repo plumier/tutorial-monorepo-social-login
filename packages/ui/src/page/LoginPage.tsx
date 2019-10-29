@@ -34,10 +34,14 @@ export default function Login() {
             <input name="password" type="password" placeholder="Password" />
             {!!error ? (<div className="error">{error}</div>) : ""}
             <button type="submit">Login</button>
-            <a href="#" onClick={() => popup.google()}>Google</a>
-            <a href="#" onClick={() => popup.facebook()}>Facebook</a>
-            <a href="#" onClick={() => popup.github()}>Github</a>
-            <a href="#">Register</a>
+            <div className="social-login">
+                <a href="#" onClick={() => popup.google()}><span className="icon-google"></span></a>
+                <a href="#" onClick={() => popup.facebook()}><span className="icon-facebook-official"></span></a>
+                <a href="#" onClick={() => popup.github()}><span className="icon-github"></span></a>
+            </div>
+            <p>
+                Not a member yet? click <a href="#">here</a> to register
+            </p>
         </form>
     </div>
 }

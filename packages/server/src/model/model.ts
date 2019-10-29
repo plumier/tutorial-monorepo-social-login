@@ -35,16 +35,6 @@ export class Todo extends DomainBase {
 export const TodoModel = model(Todo)
 
 @collection()
-export class SocialLogin extends DomainBase {
-    constructor(
-        public socialId: string,
-        public provider: "Facebook" | "Google" | "Github"
-    ) { super() }
-}
-
-export const SocialLoginModel = model(SocialLogin)
-
-@collection()
 export class User extends DomainBase {
     constructor(
         public name: string,
@@ -56,9 +46,10 @@ export class User extends DomainBase {
         public password: string,
         @authorize.role("Admin")
         public role: UserRole,
-        @reflect.array(SocialLogin)
-        @val.optional()
-        public socialLogin: SocialLogin[]
+        @authorize.role("Admin")
+        public socialId: string,
+        @authorize.role("Admin")
+        public provider: "Facebook" | "Google" | "Github" | "Local"
     ) { super() }
 }
 

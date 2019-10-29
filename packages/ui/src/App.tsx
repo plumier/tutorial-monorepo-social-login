@@ -9,11 +9,12 @@ import session from "./page/session"
 // Social login popup handler 
 declare global {
   interface Window {
-    onLogin(msg: any): void
+    onLogin(sender:Window, msg: any): void
   }
 }
 window.onLogin = onLogin
-async function onLogin(params: { type: "Success" | "Failed", accessToken: string }) {
+async function onLogin(sender:Window, params: { type: "Success" | "Failed", accessToken: string }) {
+  sender.close()
   //exchange access token from social login popup with cookie
   if (params.accessToken)
     await Axios.post("/auth/exchange", {}, { headers: { Authorization: `Bearer ${params.accessToken}` } })

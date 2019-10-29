@@ -6,21 +6,29 @@
 
 .login-container input,
 .login-container button,
-.login-container a,
 .login-container .error {
     display: block;
     margin-bottom: 20px;
 }
-
 .login-container input {
     width: 250px;
 }
 .login-container button {
     width: 250px;
 }
-.login-container a {
-    text-align: center;
-}
 .login-container .error{
     color: red;
+}
+.social-login {
+    display: flex;
+    flex-direction: row;
+}
+.social-login a {
+    flex-grow: 1;
+    text-align: center;
+    text-decoration: none;
+    font-size: 25px;
+}
+.social-login a:visited {
+    color: black;
 }
