@@ -1,11 +1,12 @@
 import "../style/Home.css"
 
-import React, { useEffect, useState, MouseEventHandler, KeyboardEventHandler, ChangeEventHandler } from "react"
 import Axios from "axios"
+import React, { ChangeEventHandler, KeyboardEventHandler, MouseEventHandler, useEffect, useState } from "react"
+
 import session from "./session"
-import { url } from "inspector"
 
 export default function Home() {
+  const [dropVisible, setDropVisible] = useState(false)
   const [todoList, setTodoList] = useState<Todo[]>([])
   const [user, setUser] = useState<User>({} as User)
   const [title, setTitle] = useState("")
@@ -68,8 +69,8 @@ export default function Home() {
           onChange={x => setTitle(x.currentTarget.value)}
           onKeyUp={saveTodo} value={title} />
         <div className="user">
-          <div className="avatar" style={{ backgroundImage: `url(${user.picture})` }}></div>
-          <div className="dropdown">
+          <a href="#" onClick={() => setDropVisible(!dropVisible)}><div className="avatar" style={{ backgroundImage: `url(${user.picture})` }}></div></a>
+          <div className="dropdown" style={{ display: dropVisible ? "block" : "none" }}>
             <div className="item">{user.name}</div>
             <a href="#" className="item" onClick={logOut}>Logout</a>
           </div>

@@ -3,26 +3,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-d
 
 import Home from "./page/HomePage"
 import Login from "./page/LoginPage"
-import Axios from "axios"
 import session from "./page/session"
-
-// Social login popup handler 
-declare global {
-  interface Window {
-    onLogin(sender:Window, msg: any): void
-  }
-}
-window.onLogin = onLogin
-async function onLogin(sender:Window, params: { type: "Success" | "Failed", accessToken: string }) {
-  sender.close()
-  //exchange access token from social login popup with cookie
-  if (params.accessToken)
-    await Axios.post("/auth/exchange", {}, { headers: { Authorization: `Bearer ${params.accessToken}` } })
-      .then(x => {
-        session.save()
-        window.location.replace("/")
-      })
-}
 
 
 export default function App() {

@@ -28,7 +28,11 @@
     text-align: center;
     text-decoration: none;
     font-size: 25px;
+    color: rgba(0,0,0,.7);
 }
 .social-login a:visited {
-    color: black;
+    color: rgba(0,0,0,.7);
+}
+.login-container .register {
+    margin-top: 50px;
 }
