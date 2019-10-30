@@ -57,6 +57,7 @@ export default function Home() {
       })
       .catch(e => console.log(e))
   }
+
   useEffect(() => {
     loadUser()
     refresh()
@@ -65,17 +66,18 @@ export default function Home() {
   return (
     <div className="container">
       <div className="header-container">
-        <input type="text" className="input-todo" placeholder="Something to do? type here..."
-          onChange={x => setTitle(x.currentTarget.value)}
-          onKeyUp={saveTodo} value={title} />
+        <h2 className="title">Ngapain?</h2>
         <div className="user">
-          <a href="#" onClick={() => setDropVisible(!dropVisible)}><div className="avatar" style={{ backgroundImage: `url(${user.picture})` }}></div></a>
-          <div className="dropdown" style={{ display: dropVisible ? "block" : "none" }}>
+          <div className="avatar" style={{ backgroundImage: `url(${user.picture})` }}></div>
+          <div className="name">
             <div className="item">{user.name}</div>
             <a href="#" className="item" onClick={logOut}>Logout</a>
           </div>
         </div>
       </div>
+      <input type="text" className="input-todo" placeholder="Something to do? type here..."
+        onChange={x => setTitle(x.currentTarget.value)}
+        onKeyUp={saveTodo} value={title} />
       <table>
         <tbody>
           {
