@@ -19,3 +19,6 @@ jobs:
       run: yarn install
     - name: Run tests 
       run: yarn test
+      env: 
+        PORT:8000
+        JWT_SECRET:lorem ipsum dolor sit amet
