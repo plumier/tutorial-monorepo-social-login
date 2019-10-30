@@ -1,7 +1,6 @@
 node_modules
 coverage
 build
-yarn.lock
 *.js
 .env
 !jest.config.js
