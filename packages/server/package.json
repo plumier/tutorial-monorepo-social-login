@@ -5,7 +5,6 @@
   "scripts": {
     "start": "node src/index",
     "debug": "ts-node-dev --inspect -- src/index",
-    "prebuild": "ts-node scripts/prebuild.ts",
     "build": "tsc -p tsconfig.build.json",
     "test": "jest"
   },
