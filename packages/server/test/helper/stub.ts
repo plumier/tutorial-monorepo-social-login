@@ -24,7 +24,6 @@ const user = new Stub(UserModel, () => ({
     email: faker.internet.email(),
     password: "123456",
     picture: faker.image.imageUrl(300, 300),
-    socialId: faker.random.uuid()
 }))
 
 const todo = new Stub(TodoModel, () => ({
