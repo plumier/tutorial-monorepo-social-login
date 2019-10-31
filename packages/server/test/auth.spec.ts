@@ -20,7 +20,7 @@ describe("Social Login", () => {
     it("Should able to login", async () => {
         const user = await stub.user.db({ provider: "Facebook", role: "User" })
         const controller = new SocialLoginController()
-        const result = await controller.facebook(stub.facebook({ id: user.socialId }))
+        const result = await controller.facebook(stub.facebook({ id: user.socialId }), {} as any)
         const login = getLoginUserFromCallback(result)
         const savedUser = await stub.user.get({ provider: "Facebook", socialId: user.socialId })
         expect(savedUser!.toObject()).toMatchObject({ id: login.userId, role: login.role })
@@ -28,7 +28,7 @@ describe("Social Login", () => {
 
     it("Should able to register and login", async () => {
         const controller = new SocialLoginController()
-        const result = await controller.facebook(stub.facebook({ id: "12345678" }))
+        const result = await controller.facebook(stub.facebook({ id: "12345678" }), {} as any)
         const login = getLoginUserFromCallback(result)
         const user = await stub.user.get({ provider: "Facebook", socialId: "12345678" })
         expect(user!.toObject()).toMatchObject({ id: login.userId, role: login.role })
