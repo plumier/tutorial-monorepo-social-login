@@ -1136,10 +1136,10 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@plumier/core@1.0.0-dev.6+41e078a":
-  version "1.0.0-dev.6"
-  resolved "https://registry.yarnpkg.com/@plumier/core/-/core-1.0.0-dev.6.tgz#17732942d4a0ffdff4393fad9ec0266dee3db447"
-  integrity sha512-aTVSphLK8E9fKlqN7+bhs/6zWDvhdZkmaGV+EtbNskmNLJzIhf9g4iF8Lq23u6ktQIapOJRouKVgvvvMqa34SQ==
+"@plumier/core@1.0.0-dev.7+21ea29c":
+  version "1.0.0-dev.7"
+  resolved "https://registry.yarnpkg.com/@plumier/core/-/core-1.0.0-dev.7.tgz#14694c0d7ad871a0a7aefc24adc69a8b78e15d2d"
+  integrity sha512-uUk6697nTHwzewuBXk/EYKvUf5RiQCRF575WXFYAWUiwgxTosm4cDm6hTyB3cvTBg9Q82Q1jDzvopvbut7Qf4w==
   dependencies:
     "@types/glob" "^7.1.1"
     "@types/koa" "^2.0.51"
@@ -1150,41 +1150,43 @@
     tslib "^1.10.0"
     typedconverter "^1.0.1"
 
-"@plumier/jwt@1.0.0-dev.6":
-  version "1.0.0-dev.6"
-  resolved "https://registry.yarnpkg.com/@plumier/jwt/-/jwt-1.0.0-dev.6.tgz#5e954a4f7568539afe50bb401d15fd588f0de858"
-  integrity sha512-SlY5QmmObyt6gv9Q+uVy76DTb/g6Gj/9HCLJWGq+OpMQtMAtQwwqdMpHEQImjMhDIPKMQwRuxTgAkFWpI9i8dA==
+"@plumier/jwt@1.0.0-dev.7":
+  version "1.0.0-dev.7"
+  resolved "https://registry.yarnpkg.com/@plumier/jwt/-/jwt-1.0.0-dev.7.tgz#09571e5dad556f210b9476673891d22a014b9a2b"
+  integrity sha512-AWkss/8rSW5hbxJGutMuRnxTTXzofXqVDAiLDSW0Qdc7cypOosdNL+XqPgI0n6synpXy0VGFxLWrEtUS/EMfwA==
   dependencies:
-    "@plumier/core" "1.0.0-dev.6+41e078a"
+    "@plumier/core" "1.0.0-dev.7+21ea29c"
     koa-jwt "^3.6.0"
 
-"@plumier/mongoose@1.0.0-dev.6":
-  version "1.0.0-dev.6"
-  resolved "https://registry.yarnpkg.com/@plumier/mongoose/-/mongoose-1.0.0-dev.6.tgz#cd05982823f4fd0832f474ed41f4a58186e9bdbe"
-  integrity sha512-WYmUMFuAE04bFasKyfIEcv3t6srYd+JERh+jcXVQnclxhWd4I1pCEob0N96GnkbX/qkLQ7JxNP82b8DA4k724g==
+"@plumier/mongoose@1.0.0-dev.7":
+  version "1.0.0-dev.7"
+  resolved "https://registry.yarnpkg.com/@plumier/mongoose/-/mongoose-1.0.0-dev.7.tgz#896b2298a87d8290c83d80bff5dbc6d99084c2c1"
+  integrity sha512-+Uo5luXbzbgKugk6NdqwS3moa9v4TsL/Kz+b2zfUXWd5f+MQH+EnZfRXpCq6OWCKM23H0H5G81y5Q0/REt3Zhw==
   dependencies:
-    "@plumier/core" "1.0.0-dev.6+41e078a"
+    "@plumier/core" "1.0.0-dev.7+21ea29c"
     "@types/mongoose" "^5.5.23"
     chalk "^2.4.2"
     mongoose "^5.7.7"
 
-"@plumier/serve-static@1.0.0-dev.6":
-  version "1.0.0-dev.6"
-  resolved "https://registry.yarnpkg.com/@plumier/serve-static/-/serve-static-1.0.0-dev.6.tgz#da337c07c1636e73ceb39bae523f31045139a0ca"
-  integrity sha512-68XDh19aAgxctGrjoJm3lV77u3Q/Ff6FYqQBf2Ce9BdYDQOyUViMisRqWWeFvYMcBfdFUhReM9FGwRFZ/iv1Zw==
+"@plumier/serve-static@1.0.0-dev.7":
+  version "1.0.0-dev.7"
+  resolved "https://registry.yarnpkg.com/@plumier/serve-static/-/serve-static-1.0.0-dev.7.tgz#44c8f9c49923073a70a8fbd9a48759d6163a4716"
+  integrity sha512-ewqqnaeRdNN8pt8l96RnLaZNSbq8whdJhDxi/cihk9WNn6z8NKCoIgr0fQiSyjl8yB76rv8ARcyu609UR2QBsw==
   dependencies:
-    "@plumier/core" "1.0.0-dev.6+41e078a"
+    "@plumier/core" "1.0.0-dev.7+21ea29c"
     "@types/koa-send" "^4.1.2"
     koa-send "^5.0.0"
 
-"@plumier/social-login@1.0.0-dev.6":
-  version "1.0.0-dev.6"
-  resolved "https://registry.yarnpkg.com/@plumier/social-login/-/social-login-1.0.0-dev.6.tgz#16a3748d5b8f7e6d0773351348567667f7be31af"
-  integrity sha512-jnV+X55dHV1dJuiCgLnWvxnnDCpWSiW7FU0aVQsRvQbRNw/wagUEs1OgYjC3HvA9iIqMW6nMfQZg3zaXW8gqpQ==
+"@plumier/social-login@1.0.0-dev.7":
+  version "1.0.0-dev.7"
+  resolved "https://registry.yarnpkg.com/@plumier/social-login/-/social-login-1.0.0-dev.7.tgz#f3b733ee7b761c3c7523bb651e5fe87e90cd104a"
+  integrity sha512-gT7t2/LLm+UN/o99LazH1NwVBOSsMh4y5FPT/ZfbgN2sO8TmJAHJ9fp3Zk11847YvmQRFyymTeLnP+NiQ7QBTw==
   dependencies:
-    "@plumier/core" "1.0.0-dev.6+41e078a"
+    "@plumier/core" "1.0.0-dev.7+21ea29c"
     "@types/axios" "0.14.0"
+    "@types/debug" "^4.1.5"
     axios "0.19.0"
+    debug "^4.1.1"
 
 "@svgr/babel-plugin-add-jsx-attribute@^4.2.0":
   version "4.2.0"
@@ -1377,6 +1379,11 @@
     "@types/express" "*"
     "@types/keygrip" "*"
     "@types/node" "*"
+
+"@types/debug@^4.1.5":
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
+  integrity sha512-Q1y515GcOdTHgagaVFhHnIFQ38ygs/kmxdNpvpou+raI9UO3YZcHDngBSYKQklcKlvA7iuQlmIKbzvmxcOE9CQ==
 
 "@types/del@^4.0.0":
   version "4.0.0"
@@ -8625,13 +8632,13 @@ pkg-up@2.0.0:
   dependencies:
     find-up "^2.1.0"
 
-plumier@1.0.0-dev.6:
-  version "1.0.0-dev.6"
-  resolved "https://registry.yarnpkg.com/plumier/-/plumier-1.0.0-dev.6.tgz#5382cadeb10ec32da3e9de387e441a2c8aea4b06"
-  integrity sha512-pMeh1T3zTxIw1lRY3c88mQXGigu1IZiikeGGNbi85TbX56LPXAi8M0Z5+GFGUxR9GECVtw3mvvaFB6WojHDP9g==
+plumier@1.0.0-dev.7:
+  version "1.0.0-dev.7"
+  resolved "https://registry.yarnpkg.com/plumier/-/plumier-1.0.0-dev.7.tgz#8e8ac1c4539fbeac4d55640b63a1f339ed5fa795"
+  integrity sha512-JgbwySaWSi+DBtSL5wNdPy0WvP70ALdjmTiAPX9wW78ba3MZSKTKvhpC0AUVwyxZd7FF2uAn00iQqjL39yFSRg==
   dependencies:
     "@koa/cors" "^3.0.0"
-    "@plumier/core" "1.0.0-dev.6+41e078a"
+    "@plumier/core" "1.0.0-dev.7+21ea29c"
     "@types/faker" "^4.1.6"
     "@types/koa__cors" "^2.2.3"
     faker "^4.1.0"
