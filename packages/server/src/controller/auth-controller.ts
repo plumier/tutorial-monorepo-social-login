@@ -67,17 +67,17 @@ export class SocialLoginController {
     }
 
     @oAuthCallback(new FacebookProvider(process.env.FACEBOOK_CLIENT_ID, process.env.FACEBOOK_SECRET))
-    async facebook(@bind.loginStatus() login: FacebookLoginStatus, @bind.ctx() ctx:Context) {
-        console.log("********************* protocol", ctx.request.protocol )
-        console.log("********************* origin", ctx.request.origin )
-        console.log("********************* secure", ctx.request.secure )
-        console.log("********************* originalUrl", ctx.request.originalUrl )
+    async facebook(@bind.loginStatus() login: FacebookLoginStatus) {
         const data = login.data || {} as FacebookProfile
         return this.loginOrRegister(login.status, "Facebook", data.id, { name: data.name, picture: data.picture.data.url })
     }
 
     @oAuthCallback(new GoogleProvider(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_SECRET))
-    async google(@bind.loginStatus() login: GoogleLoginStatus) {
+    async google(@bind.loginStatus() login: GoogleLoginStatus, @bind.ctx() ctx: Context) {
+        console.log("********************* protocol", ctx.request.protocol)
+        console.log("********************* origin", ctx.request.origin)
+        console.log("********************* secure", ctx.request.secure)
+        console.log("********************* originalUrl", ctx.request.originalUrl)
         const data = login.data || {} as GoogleProfile
         return this.loginOrRegister(login.status, "Google", data.id, { name: data.name, picture: data.picture })
     }
