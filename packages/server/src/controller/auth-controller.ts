@@ -72,6 +72,8 @@ export class SocialLoginController {
         console.log("********************* origin", request.origin )
         console.log("********************* secure", request.secure )
         console.log("********************* originalUrl", request.originalUrl )
+        console.log("********************* hostname", request.hostname )
+        console.log("********************* X-Forwarded-Proto", request.get("X-Forwarded-Proto"))
         const data = login.data || {} as FacebookProfile
         return this.loginOrRegister(login.status, "Facebook", data.id, { name: data.name, picture: data.picture.data.url })
     }
