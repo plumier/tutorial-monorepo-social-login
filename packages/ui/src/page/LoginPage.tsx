@@ -4,6 +4,7 @@ import Axios, { AxiosError } from "axios"
 import qs from "querystring"
 import React, { FormEventHandler, useState, useEffect, EventHandler } from "react"
 import { useHistory } from "react-router"
+import {FACEBOOK_CLIENT_ID, GITHUB_CLIENT_ID, GOOGLE_CLIENT_ID} from "../config"
 
 import session from "./session"
 
@@ -46,7 +47,7 @@ export default function Login() {
   const facebookDialog = () => {
     dialog("https://www.facebook.com/v4.0/dialog/oauth?" + qs.stringify({
       redirect_uri: window.location.origin + "/auth/facebook",
-      client_id: "2287967521513920",
+      client_id: FACEBOOK_CLIENT_ID,
       display: "popup",
       state: "state"
     }))
@@ -59,7 +60,7 @@ export default function Login() {
       state: "state",
       redirect_uri: window.location.origin + "/auth/google",
       response_type: "code",
-      client_id: "719947453081-72facf1p5mlfk1jm585v4f7n13nafuci.apps.googleusercontent.com",
+      client_id: GOOGLE_CLIENT_ID,
       scope: "https://www.googleapis.com/auth/userinfo.profile"
     }))
   }
@@ -68,7 +69,7 @@ export default function Login() {
     dialog("https://github.com/login/oauth/authorize?" + qs.stringify({
       state: "state",
       redirect_uri: window.location.origin + "/auth/github",
-      client_id: "83ed72751507695cdf0f",
+      client_id: GITHUB_CLIENT_ID,
     }))
   }
 

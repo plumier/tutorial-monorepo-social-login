@@ -68,12 +68,6 @@ export class SocialLoginController {
 
     @oAuthCallback(new FacebookProvider(process.env.FACEBOOK_CLIENT_ID, process.env.FACEBOOK_SECRET))
     async facebook(@bind.loginStatus() login: FacebookLoginStatus, @bind.request() request:Request) {
-        console.log("********************* protocol", request.protocol )
-        console.log("********************* origin", request.origin )
-        console.log("********************* secure", request.secure )
-        console.log("********************* originalUrl", request.originalUrl )
-        console.log("********************* hostname", request.hostname )
-        console.log("********************* X-Forwarded-Proto", request.get("X-Forwarded-Proto"))
         const data = login.data || {} as FacebookProfile
         return this.loginOrRegister(login.status, "Facebook", data.id, { name: data.name, picture: data.picture.data.url })
     }

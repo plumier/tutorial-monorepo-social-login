@@ -10,7 +10,7 @@ import { ServeStaticFacility } from "@plumier/serve-static"
 
 
 dotenv.config({ path: join(__dirname, "../../../", ".env") })
-import { HerokuForceHttpsFacility } from "./heroku-middleware"
+import { HerokuForceHttpsFacility } from "./heroku-facility"
 
 export function createApp(config?: Partial<Configuration> & { mongoDbUri?: string }): Promise<Koa> {
     return new Plumier()
