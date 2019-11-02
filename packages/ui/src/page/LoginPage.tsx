@@ -1,10 +1,8 @@
 import "../style/Login.css"
 
 import Axios, { AxiosError } from "axios"
-import qs from "querystring"
-import React, { FormEventHandler, useState, useEffect, EventHandler } from "react"
+import React, { EventHandler, FormEventHandler, useEffect, useState } from "react"
 import { useHistory } from "react-router"
-import {FACEBOOK_CLIENT_ID, GITHUB_CLIENT_ID, GOOGLE_CLIENT_ID} from "../config"
 
 import session from "./session"
 
@@ -45,32 +43,15 @@ export default function Login() {
   }
 
   const facebookDialog = () => {
-    dialog("https://www.facebook.com/v4.0/dialog/oauth?" + qs.stringify({
-      redirect_uri: window.location.origin + "/auth/facebook",
-      client_id: FACEBOOK_CLIENT_ID,
-      display: "popup",
-      state: "state"
-    }))
+    dialog("/auth/dialogs/facebook")
   }
 
   const googleDialog = () => {
-    dialog("https://accounts.google.com/o/oauth2/v2/auth?" + qs.stringify({
-      access_type: "offline",
-      include_granted_scopes: true,
-      state: "state",
-      redirect_uri: window.location.origin + "/auth/google",
-      response_type: "code",
-      client_id: GOOGLE_CLIENT_ID,
-      scope: "https://www.googleapis.com/auth/userinfo.profile"
-    }))
+    dialog("/auth/dialogs/google")
   }
 
   const githubDialog = () => {
-    dialog("https://github.com/login/oauth/authorize?" + qs.stringify({
-      state: "state",
-      redirect_uri: window.location.origin + "/auth/github",
-      client_id: GITHUB_CLIENT_ID,
-    }))
+    dialog("/auth/dialogs/github")
   }
 
   return <div className="login-container">
@@ -84,7 +65,7 @@ export default function Login() {
         <a href="#" onClick={() => facebookDialog()}><span className="icon-facebook-official"></span></a>
         <a href="#" onClick={() => githubDialog()}><span className="icon-github"></span></a>
       </div>
-      <p className="register">Not a member? click <a href="#">here</a> to register</p>
+      <p className="register">Not a member? click <a href="/register">here</a> to register</p>
     </form>
   </div>
 }

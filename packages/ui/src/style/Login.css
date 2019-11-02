@@ -6,12 +6,16 @@
 
 .login-container input,
 .login-container button,
+.login-container span,
 .login-container .error {
     display: block;
     margin-bottom: 20px;
 }
 .login-container input {
     width: 250px;
+}
+.login-container input.has-validator {
+    margin-bottom: 4px;
 }
 .login-container button {
     width: 250px;
@@ -35,4 +39,8 @@
 }
 .login-container .register {
     margin-top: 50px;
+}
+.login-container .err {
+    padding-left: 2px;
+    color: red;
 }

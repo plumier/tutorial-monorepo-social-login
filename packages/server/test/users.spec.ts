@@ -36,6 +36,15 @@ describe("Users", () => {
                 expect(saved!.role).toBe("User")
             })
 
+            it("Should validate un match password", async () => {
+                const data = stub.user.random()
+                const { body } = await supertest(app)
+                    .post(userUrl)
+                    .send({ ...data, confirmPassword: "4545" })
+                    .expect(422)
+                expect(body.message).toMatchObject([{ path: ["data", "confirmPassword"], messages: ["Password doesn't match"] }])
+            })
+
         })
 
         describe("PUT /api/v1/users/:id", () => {
