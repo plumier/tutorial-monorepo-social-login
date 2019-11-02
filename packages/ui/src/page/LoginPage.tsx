@@ -5,6 +5,7 @@ import React, { EventHandler, FormEventHandler, useEffect, useState } from "reac
 import { useHistory } from "react-router"
 
 import session from "./session"
+import { Link } from "react-router-dom"
 
 // Social login popup handler 
 (window as any).onLogin = (sender: Window, params: { status: "Success" | "Failed", accessToken: string }) => {
@@ -65,7 +66,7 @@ export default function Login() {
         <a href="#" onClick={() => facebookDialog()}><span className="icon-facebook-official"></span></a>
         <a href="#" onClick={() => githubDialog()}><span className="icon-github"></span></a>
       </div>
-      <p className="register">Not a member? click <a href="/register">here</a> to register</p>
+      <p className="register">Not a member? click <Link to="/register">here</Link> to register</p>
     </form>
   </div>
 }

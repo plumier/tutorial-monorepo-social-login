@@ -3,6 +3,7 @@ import "../style/Login.css"
 import Axios, { AxiosError } from "axios"
 import React, { FormEventHandler, useState } from "react"
 import { useHistory } from "react-router"
+import { Link } from "react-router-dom"
 
 function getValidationMessage(data: { path: string[], messages: string[] }[]) {
   const result: { [key: string]: string } = {}
@@ -20,7 +21,8 @@ interface RegisterValidationMessage {
 }
 
 export default function Register() {
-  const [validation, setValidation] = useState<RegisterValidationMessage>({} as any)
+  const [validation, setValidation] = useState<Partial<RegisterValidationMessage>>({})
+  const history = useHistory()
 
   const onSubmit: FormEventHandler<HTMLFormElement> = e => {
     //in case of simple form submission, its not necessary to use controlled component form 
@@ -28,10 +30,13 @@ export default function Register() {
     //instead, we can use traditional way by providing name for each form input 
     //then send it using HTML 5 FormData
     e.preventDefault()
+    setValidation({})
     const data = new FormData(e.currentTarget)
     Axios.post("/api/v1/users", data)
       .then(x => {
-        e.currentTarget.reset()
+        document.getElementsByTagName("form")[0].reset()
+        alert("User saved successfully")
+        history.push("/")
       })
       .catch((e: AxiosError) => {
         if (e.response && e.response.status === 422)
@@ -52,7 +57,7 @@ export default function Register() {
       <input className="has-validator" name="confirmPassword" type="password" placeholder="Confirm password" />
       <span className="err">{validation.confirmPassword}</span>
       <button type="submit">Submit</button>
-      <a href="/">Go Back</a>
+      <Link to="/">Go Back</Link>
     </form>
   </div>
 }
