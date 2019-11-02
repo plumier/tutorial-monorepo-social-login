@@ -62,9 +62,9 @@ export default function Login() {
       {!!error ? (<div className="error">{error}</div>) : ""}
       <button type="submit">Login</button>
       <div className="social-login">
-        <a href="#" onClick={googleDialog}><span className="icon-google"></span></a>
-        <a href="#" onClick={facebookDialog}><span className="icon-facebook-official"></span></a>
-        <a href="#" onClick={githubDialog}><span className="icon-github"></span></a>
+        <button onClick={googleDialog}><span className="link-button icon-google"></span></button>
+        <button onClick={facebookDialog}><span className="link-button icon-facebook-official"></span></button>
+        <button onClick={githubDialog}><span className="link-button icon-github"></span></button>
       </div>
       <p className="register">Not a member? click <Link to="/register">here</Link> to register</p>
     </form>

@@ -25,12 +25,6 @@ td.completed {
   text-decoration: line-through;
   color: rgba(0, 0, 0, 0.5)
 }
-td.delete a {
-  display: none;
-}
-tr:hover td.delete a {
-  display: inline;
-}
 .input-todo {
   flex-grow: 1;
   margin: 30px 0 8px;

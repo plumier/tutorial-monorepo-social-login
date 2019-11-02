@@ -35,7 +35,7 @@ export default function Home() {
         .catch(x => console.error(x))
     }
   }
-  const deleteTodo: MouseEventHandler<HTMLAnchorElement> = e => {
+  const deleteTodo: MouseEventHandler<HTMLButtonElement> = e => {
     const id = e.currentTarget.dataset.id
     if (!window.confirm("Are you sure?")) return
     Axios.delete(`/api/v1/todos/${id}`)
@@ -70,7 +70,7 @@ export default function Home() {
           <div className="avatar" style={{ backgroundImage: `url(${user.picture})` }}></div>
           <div className="name">
             <div className="item">{user.name}</div>
-            <a href="#" className="item" onClick={logOut}>Logout</a>
+            <button className="item link-button" onClick={logOut}>Logout</button>
           </div>
         </div>
       </div>
@@ -86,7 +86,7 @@ export default function Home() {
               </td>
               <td className={x.completed ? "completed" : ""}>{x.title}</td>
               <td className="delete">
-                <a data-id={x.id} href="#" onClick={deleteTodo}>Delete</a>
+                <button className="link-button" data-id={x.id} onClick={deleteTodo}>Delete</button>
               </td>
             </tr>)
           }
