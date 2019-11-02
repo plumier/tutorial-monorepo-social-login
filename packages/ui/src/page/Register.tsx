@@ -26,9 +26,10 @@ export default function Register() {
 
   const onSubmit: FormEventHandler<HTMLFormElement> = e => {
     //in case of simple form submission, its not necessary to use controlled component form 
-    //using several fields and onChange event then compose the JSON manually
+    //by using several fields and onChange events then compose the JSON manually
     //instead, we can use traditional way by providing name for each form input 
-    //then send it using HTML 5 FormData
+    //then send it using HTML 5 FormData. It will send form data in multipart form data 
+    //another alternative you can use form-serializer to serialize the form and send using url encoded
     e.preventDefault()
     setValidation({})
     const data = new FormData(e.currentTarget)

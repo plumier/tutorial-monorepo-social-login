@@ -16,7 +16,7 @@ export function signToken(user: User & Document) {
     return sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
 }
 
-//save global CSRF token in memory
+//save global CSRF secret in memory
 const CSRF_SECRET = new Token().secretSync()
 
 export function csrfToken() {

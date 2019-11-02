@@ -1,4 +1,4 @@
-import { DefaultFacility, Invocation, ActionResult, response, PlumierApplication } from "plumier"
+import { DefaultFacility, PlumierApplication, response } from "plumier"
 
 export class HerokuForceHttpsFacility extends DefaultFacility {
     setup(app: Readonly<PlumierApplication>): void {

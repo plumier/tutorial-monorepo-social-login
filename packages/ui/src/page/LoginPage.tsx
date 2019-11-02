@@ -1,7 +1,7 @@
 import "../style/Login.css"
 
 import Axios, { AxiosError } from "axios"
-import React, { EventHandler, FormEventHandler, useEffect, useState } from "react"
+import React, { FormEventHandler, useState } from "react"
 import { useHistory } from "react-router"
 
 import session from "./session"
@@ -57,14 +57,14 @@ export default function Login() {
 
   return <div className="login-container">
     <form onSubmit={onSubmit}>
-      <input name="email" type="email" placeholder="Email" />
+      <input name="email" type="text" placeholder="Email" />
       <input name="password" type="password" placeholder="Password" />
       {!!error ? (<div className="error">{error}</div>) : ""}
       <button type="submit">Login</button>
       <div className="social-login">
-        <a href="#" onClick={() => googleDialog()}><span className="icon-google"></span></a>
-        <a href="#" onClick={() => facebookDialog()}><span className="icon-facebook-official"></span></a>
-        <a href="#" onClick={() => githubDialog()}><span className="icon-github"></span></a>
+        <a href="#" onClick={googleDialog}><span className="icon-google"></span></a>
+        <a href="#" onClick={facebookDialog}><span className="icon-facebook-official"></span></a>
+        <a href="#" onClick={githubDialog}><span className="icon-github"></span></a>
       </div>
       <p className="register">Not a member? click <Link to="/register">here</Link> to register</p>
     </form>

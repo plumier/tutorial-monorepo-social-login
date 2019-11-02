@@ -6,7 +6,6 @@ import React, { ChangeEventHandler, KeyboardEventHandler, MouseEventHandler, use
 import session from "./session"
 
 export default function Home() {
-  const [dropVisible, setDropVisible] = useState(false)
   const [todoList, setTodoList] = useState<Todo[]>([])
   const [user, setUser] = useState<User>({} as User)
   const [title, setTitle] = useState("")
