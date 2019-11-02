@@ -31,7 +31,6 @@ This example created using `monorepo-plumier-react` starter. Use `npx plumier-st
 
 ### Setup Social Login Configuration
 Set appropriate value for social login configuration : 
-* Front end on `packages/ui/src/config.ts`
 * Backend: rename the `.env.example` into `.env` and change the appropriate value.
 
 ### Install Packages and Run
