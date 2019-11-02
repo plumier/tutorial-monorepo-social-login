@@ -1,0 +1,51 @@
+{
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "DEBUG": {
+      "required": true
+    },
+    "FACEBOOK_CLIENT_ID": {
+      "required": true
+    },
+    "FACEBOOK_SECRET": {
+      "required": true
+    },
+    "GITHUB_CLIENT_ID": {
+      "required": true
+    },
+    "GITHUB_SECRET": {
+      "required": true
+    },
+    "GOOGLE_CLIENT_ID": {
+      "required": true
+    },
+    "GOOGLE_SECRET": {
+      "required": true
+    },
+    "JWT_SECRET": {
+      "required": true
+    },
+    "MONGODB_URI": {
+      "required": true
+    },
+    "PORT": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "tutorial-monorepo-social-login",
+  "scripts": {
+  },
+  "stack": "heroku-18"
+}
