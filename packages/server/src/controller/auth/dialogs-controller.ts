@@ -1,10 +1,10 @@
 import { Context } from "koa"
-import { bind, response } from "plumier"
+import { bind, response, authorize } from "plumier"
 import qs from "querystring"
 
 import { csrfToken } from "./helper"
 
-
+@authorize.public()
 export class DialogsController {
     facebook(@bind.ctx() ctx: Context) {
         return response.redirect("https://www.facebook.com/v4.0/dialog/oauth?" + qs.stringify({

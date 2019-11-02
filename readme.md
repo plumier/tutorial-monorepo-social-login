@@ -2,20 +2,22 @@
 This example explains how to use Plumier social login middleware. 
 
 ## Stack 
-This example created using `monorepo-plumier-react` starter. 
+This example created using `monorepo-plumier-react` starter. Use `npx plumier-starter`
 
 * React as the frontend 
 * Plumier as the backend 
 * MongoDB database using Mongoose and `@plumier/mongoose` helper 
 * Github actions (CI)
 * Heroku automatic deployment (CD)
+* Monorepo using Yarn workspace
 
 ## Security Best Practice 
-* **For SPA don't store JWT token on storage**, Instead store JWT token on cookie with option `HttpOnly` and `SameSite`
-* Generate social login dialog URL on server side to prevent hard coded the social provider client id and 
+* For SPA don't store JWT token on storage, Instead store JWT token on cookie with option `HttpOnly` and `SameSite`
+* Generate social login dialog URL on server side to prevent hardcoded the social provider client id  
 * Secure social login dialog with CSRF token on STATE parameter then validate the token on social login callback 
-* Authorize endpoint to restrict access to some user
+* Authorize endpoint to restrict access to some users
 * Validate data to prevent malformed data which will cause unexpected error
+* Force HTTPS/SSL on heroku facility
 
 ## Local Dev Setup
 ### Prerequisites:
