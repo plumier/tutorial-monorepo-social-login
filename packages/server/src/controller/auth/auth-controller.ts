@@ -5,7 +5,7 @@ import { UserModel } from "../../model/model"
 import { createAuthCookie, signToken } from "./helper"
 
 
-@route.root("")
+@route.root("/auth")
 @authorize.public()
 export class AuthController {
     @route.post()

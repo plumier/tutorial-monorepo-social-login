@@ -18,7 +18,7 @@ import { createAuthCookie, csrfVerify, signToken } from "./helper"
 type Provider = "Github" | "Facebook" | "Google"
 
 
-@route.root("")
+@route.root("/auth")
 @authorize.public()
 export class SocialLoginController {
     @route.ignore()

@@ -47,8 +47,8 @@ export class UsersController {
 
 //reuse controller to handle 2 endpoints 
 //in case of /users/me use class specific middleware to assigned the id parameter see below
-@route.root("/users/me")
-@route.root("/users/:id")
+@route.root("users/me")
+@route.root("users/:id")
 //class specific middleware. applied to all UserByIdController methods
 @middleware.use({
     execute: async i => {

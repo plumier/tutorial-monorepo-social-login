@@ -10,20 +10,13 @@ export default function Home() {
   const [user, setUser] = useState<User>({} as User)
   const [title, setTitle] = useState("")
   const refresh = () => {
-    Axios.get<Todo[]>("/api/v1/todos")
-      .then(x => {
-        if (x.status === 200) {
-          setTodoList(x.data || [])
-        }
-      })
-      .catch(x => console.error(x))
-  }
-  const loadUser = () => {
-    Axios.get<User>("/api/v1/users/me")
-      .then(x => {
-        setUser(x.data)
-      })
-      .catch(x => console.error(x))
+    Promise.all([
+      Axios.get<Todo[]>("/api/v1/todos"),
+      Axios.get<User>("/api/v1/users/me")
+    ]).then(([resTodo, resUser]) => {
+      setTodoList(resTodo.data || [])
+      setUser(resUser.data)
+    }).catch(console.error)
   }
   const saveTodo: KeyboardEventHandler = e => {
     if (e.key === "Enter") {
@@ -32,7 +25,7 @@ export default function Home() {
           refresh()
           setTitle("")
         })
-        .catch(x => console.error(x))
+        .catch(console.error)
     }
   }
   const deleteTodo: MouseEventHandler<HTMLButtonElement> = e => {
@@ -40,13 +33,13 @@ export default function Home() {
     if (!window.confirm("Are you sure?")) return
     Axios.delete(`/api/v1/todos/${id}`)
       .then(() => refresh())
-      .catch(x => console.error(x))
+      .catch(console.error)
   }
   const checkTodo: ChangeEventHandler<HTMLInputElement> = e => {
     const id = e.currentTarget.dataset.id
     Axios.put(`/api/v1/todos/${id}`, { completed: e.currentTarget.checked })
       .then(() => refresh())
-      .catch(x => console.error(x))
+      .catch(console.error)
   }
   const logOut = () => {
     Axios.get("/auth/logout")
@@ -54,11 +47,10 @@ export default function Home() {
         session.clear()
         window.location.reload();
       })
-      .catch(e => console.log(e))
+      .catch(console.error)
   }
 
   useEffect(() => {
-    loadUser()
     refresh()
   }, [])
 

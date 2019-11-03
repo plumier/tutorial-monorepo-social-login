@@ -12,9 +12,9 @@ This example created using `monorepo-plumier-react` starter. Use `npx plumier-st
 * Monorepo using Yarn workspace
 
 ## Security Best Practice 
-* For SPA don't store JWT token on storage, Instead store JWT token on cookie with option `HttpOnly` and `SameSite`
-* Generate social login dialog URL on server side to prevent hardcoded the social provider client id  
-* Secure social login dialog with CSRF token on STATE parameter then validate the token on social login callback 
+* For SPA don't store JWT token on localStorage/sessionStorage, Instead store JWT token on cookie with option `HttpOnly` and `SameSite`
+* Generate social login dialog url on server side to prevent hardcoded social provider client id  
+* Secure social login dialog url with CSRF token on STATE parameter then validate the token on social login callback 
 * Authorize endpoint to restrict access to some users
 * Validate data to prevent malformed data which will cause unexpected error
 * Force HTTPS/SSL on heroku facility

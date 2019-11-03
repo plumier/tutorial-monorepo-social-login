@@ -21,6 +21,7 @@ interface RegisterValidationMessage {
 }
 
 export default function Register() {
+  const [loading, setLoading] = useState(false)
   const [validation, setValidation] = useState<Partial<RegisterValidationMessage>>({})
   const history = useHistory()
 
@@ -32,6 +33,7 @@ export default function Register() {
     //another alternative you can use form-serializer to serialize the form and send using url encoded
     e.preventDefault()
     setValidation({})
+    setLoading(true)
     const data = new FormData(e.currentTarget)
     Axios.post("/api/v1/users", data)
       .then(x => {
@@ -45,6 +47,9 @@ export default function Register() {
         else if (e.response && e.response.status !== 200)
           alert("Internal server error occur")
       })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
   return <div className="login-container">
@@ -57,7 +62,7 @@ export default function Register() {
       <span className="err">{validation.password}</span>
       <input className="has-validator" name="confirmPassword" type="password" placeholder="Confirm password" />
       <span className="err">{validation.confirmPassword}</span>
-      <button type="submit">Submit</button>
+      <button disabled={loading} type="submit">Submit</button>
       <Link to="/">Go Back</Link>
     </form>
   </div>

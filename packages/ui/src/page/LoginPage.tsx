@@ -18,12 +18,13 @@ import { Link } from "react-router-dom"
 
 export default function Login() {
   const history = useHistory()
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
 
   const onSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
-    const data = new FormData(e.currentTarget)
-    Axios.post("/auth/login", data)
+    setLoading(true)
+    Axios.post("/auth/login", new FormData(e.currentTarget))
       .then(x => {
         setError(undefined)
         session.save()
@@ -34,6 +35,9 @@ export default function Login() {
         if (e.response.status === 422)
           return setError("Invalid email or password")
         console.log(e)
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
@@ -60,13 +64,13 @@ export default function Login() {
       <input name="email" type="text" placeholder="Email" />
       <input name="password" type="password" placeholder="Password" />
       {!!error ? (<div className="error">{error}</div>) : ""}
-      <button type="submit">Login</button>
-      <div className="social-login">
-        <button onClick={googleDialog}><span className="link-button icon-google"></span></button>
-        <button onClick={facebookDialog}><span className="link-button icon-facebook-official"></span></button>
-        <button onClick={githubDialog}><span className="link-button icon-github"></span></button>
-      </div>
-      <p className="register">Not a member? click <Link to="/register">here</Link> to register</p>
+      <button disabled={loading} type="submit">Login</button>
     </form>
+    <div className="social-login">
+      <button disabled={loading} onClick={googleDialog}><span className="link-button icon-google"></span></button>
+      <button disabled={loading} onClick={facebookDialog}><span className="link-button icon-facebook-official"></span></button>
+      <button disabled={loading} onClick={githubDialog}><span className="link-button icon-github"></span></button>
+    </div>
+    <p className="register">Not a member? click <Link to="/register">here</Link> to register</p>
   </div>
 }
