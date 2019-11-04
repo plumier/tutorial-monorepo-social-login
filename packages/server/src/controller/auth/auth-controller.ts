@@ -28,6 +28,8 @@ export const CSRF_SECRET = new Token().secretSync()
 @route.root("/auth")
 @authorize.public()
 export class AuthController {
+
+    //POST /auth/login
     @route.post()
     async login(@val.email() email: string, password: string) {
         const user = await UserModel.findOne({ email })
@@ -39,6 +41,7 @@ export class AuthController {
         else throw new HttpStatusError(422, "Invalid username or password")
     }
 
+    //GET /auth/logout
     async logout() {
         return new ActionResult()
             .setCookie("Authorization")
@@ -67,18 +70,21 @@ export class AuthController {
             return response.callbackView({ status })
     }
 
+    //GET /auth/facebook
     @oAuthCallback(new FacebookProvider(process.env.FACEBOOK_CLIENT_ID, process.env.FACEBOOK_SECRET))
     async facebook(@bind.loginStatus() login: FacebookLoginStatus, state: string) {
         const data = login.data || {} as FacebookProfile
         return this.loginOrRegister(login.status, state, { name: data.name, picture: data.picture.data.url, provider: "Facebook", socialId: data.id })
     }
 
+    //GET /auth/google
     @oAuthCallback(new GoogleProvider(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_SECRET))
     async google(@bind.loginStatus() login: GoogleLoginStatus, state: string) {
         const data = login.data || {} as GoogleProfile
         return this.loginOrRegister(login.status, state, { name: data.name, picture: data.picture, provider: "Google", socialId: data.id })
     }
 
+    //GET /auth/github
     @oAuthCallback(new GitHubProvider(process.env.GITHUB_CLIENT_ID, process.env.GITHUB_SECRET))
     async github(@bind.loginStatus() login: GitHubLoginStatus, state: string) {
         const data = login.data || {} as GitHubProfile
