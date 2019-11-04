@@ -1,8 +1,10 @@
+import Token from "csrf"
 import { Context } from "koa"
-import { bind, response, authorize } from "plumier"
+import { authorize, bind, response } from "plumier"
 import qs from "querystring"
 
-import { csrfToken } from "./helper"
+import { CSRF_SECRET } from "./auth-controller"
+
 
 @authorize.public()
 export class DialogsController {
@@ -11,7 +13,7 @@ export class DialogsController {
             redirect_uri: ctx.origin + "/auth/facebook",
             client_id: process.env.FACEBOOK_CLIENT_ID,
             display: "popup",
-            state: csrfToken()
+            state: new Token().create(CSRF_SECRET)
         }))
     }
 
@@ -19,7 +21,7 @@ export class DialogsController {
         return response.redirect("https://accounts.google.com/o/oauth2/v2/auth?" + qs.stringify({
             access_type: "offline",
             include_granted_scopes: true,
-            state: csrfToken(),
+            state: new Token().create(CSRF_SECRET),
             redirect_uri: ctx.origin + "/auth/google",
             response_type: "code",
             client_id: process.env.GOOGLE_CLIENT_ID,
@@ -29,7 +31,7 @@ export class DialogsController {
 
     github(@bind.ctx() ctx: Context) {
         return response.redirect("https://github.com/login/oauth/authorize?" + qs.stringify({
-            state: csrfToken(),
+            state: new Token().create(CSRF_SECRET),
             redirect_uri: ctx.origin + "/auth/github",
             client_id: process.env.GITHUB_CLIENT_ID,
         }))

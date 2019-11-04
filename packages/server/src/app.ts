@@ -1,17 +1,45 @@
-import { MongooseFacility } from "@plumier/mongoose"
+import { JwtAuthFacility } from "@plumier/jwt"
+import { MongooseFacility, SchemaGenerator } from "@plumier/mongoose"
+import { ServeStaticFacility } from "@plumier/serve-static"
 import dotenv from "dotenv"
 import Koa from "koa"
-import { join } from "path"
-import Plumier, { Configuration, WebApiFacility } from "plumier"
-
-import { schemaGenerator } from "./model/helper"
-import { JwtAuthFacility } from "@plumier/jwt"
-import { ServeStaticFacility } from "@plumier/serve-static"
 import mongoose from "mongoose"
+import { join } from "path"
+import Plumier, { Configuration, DefaultFacility, PlumierApplication, response, WebApiFacility } from "plumier"
 
+
+const schemaGenerator: SchemaGenerator = def => {
+    if (def.deleted)
+        def.deleted = { type: Boolean, default: false }
+    const schema = new mongoose.Schema(def, { timestamps: true })
+    schema.set("toJSON", { virtuals: true, versionKey:false })
+    schema.set("toObject", { virtuals: true, versionKey:false })
+    return schema
+}
+
+export class HerokuForceHttpsFacility extends DefaultFacility {
+    setup(app: Readonly<PlumierApplication>): void {
+        //heroku provide SSL behind proxy it will not touch the application
+        //use Koa proxy to enable check the x-forwarded-proto header
+        app.koa.proxy = true
+
+        //heroku doesn't provide enforce HTTPS
+        //add middleware logic to redirect all http request into https request
+        app.use({
+            execute: async invocation => {
+                if (process.env.NODE_ENV === "production") {
+                    const req = invocation.context.request;
+                    if (req.headers["x-forwarded-proto"] !== "https") {
+                        return response.redirect(`https://${req.hostname}${req.originalUrl}`)
+                    }
+                }
+                return invocation.proceed()
+            }
+        })
+    }
+}
 
 dotenv.config({ path: join(__dirname, "../../../", ".env") })
-import { HerokuForceHttpsFacility } from "./heroku-facility"
 
 export function createApp(config?: Partial<Configuration> & { mongoDbUri?: string }): Promise<Koa> {
     mongoose.set("useFindAndModify", false)
