@@ -36,7 +36,9 @@ export class AuthController {
         if (user && await bcrypt.compare(password, user.password)) {
             const token = signToken(user)
             return new ActionResult({ accessToken: token })
-                .setCookie("Authorization", token)
+                //Plumier automatically check for JWT if found cookie named "Authorization"
+                //by default HttpOnly cookie is true
+                .setCookie("Authorization", token, { sameSite: "strict" })
         }
         else throw new HttpStatusError(422, "Invalid username or password")
     }
@@ -44,6 +46,7 @@ export class AuthController {
     //GET /auth/logout
     async logout() {
         return new ActionResult()
+            //set cookie without value will automatically clear the cookie
             .setCookie("Authorization")
     }
 
@@ -64,7 +67,7 @@ export class AuthController {
                 accessToken = signToken(newUser)
             }
             return response.callbackView({ status, accessToken })
-                .setCookie("Authorization", accessToken)
+                .setCookie("Authorization", accessToken, { sameSite: "strict" })
         }
         else
             return response.callbackView({ status })

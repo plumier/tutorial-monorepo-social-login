@@ -17,7 +17,7 @@ const schemaGenerator: SchemaGenerator = def => {
     return schema
 }
 
-export class HerokuForceHttpsFacility extends DefaultFacility {
+ class HerokuForceHttpsFacility extends DefaultFacility {
     setup(app: Readonly<PlumierApplication>): void {
         //heroku provide SSL behind proxy it will not touch the application
         //use Koa proxy to enable check the x-forwarded-proto header

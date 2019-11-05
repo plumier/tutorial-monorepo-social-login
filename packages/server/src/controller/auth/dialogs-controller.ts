@@ -5,6 +5,7 @@ import qs from "querystring"
 
 import { CSRF_SECRET } from "./auth-controller"
 
+//this controller provide social media auth endpoint that will be opened by a browser dialog
 
 @authorize.public()
 export class DialogsController {
