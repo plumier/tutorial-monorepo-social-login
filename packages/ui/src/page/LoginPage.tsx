@@ -1,7 +1,7 @@
 import "../style/Login.css"
 
 import Axios, { AxiosError } from "axios"
-import React, { FormEventHandler, useState } from "react"
+import React, { FormEventHandler, useState, useEffect } from "react"
 import { useHistory } from "react-router"
 
 import session from "./session"
@@ -41,21 +41,28 @@ export default function Login() {
       })
   }
 
+  useEffect(() =>{
+    setLoading(true)
+    Axios.get("/auth/dialogs/identity")
+      .then(() => setLoading(false))
+      .catch(console.error)
+  }, [])
+
   const dialog = (url: string, w = 600, h = 500) => {
     const y = window.top.outerHeight / 2 + window.top.screenY - (h / 2);
     const x = window.top.outerWidth / 2 + window.top.screenX - (w / 2);
     window.open(url, "Social Login", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
   }
 
-  const facebookDialog = () => {
+  const facebookDialog = async () => {
     dialog("/auth/dialogs/facebook")
   }
 
-  const googleDialog = () => {
+  const googleDialog = async () => {
     dialog("/auth/dialogs/google")
   }
 
-  const githubDialog = () => {
+  const githubDialog = async () => {
     dialog("/auth/dialogs/github")
   }
 

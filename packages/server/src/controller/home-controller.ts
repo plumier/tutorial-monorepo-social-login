@@ -1,6 +1,7 @@
 import "@plumier/serve-static"
-import {route, response, authorize} from "plumier"
+
 import { join } from "path"
+import { authorize, response, route } from "plumier"
 
 export class HomeController {
 
