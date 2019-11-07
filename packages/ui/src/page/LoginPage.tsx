@@ -10,7 +10,8 @@ import { Link } from "react-router-dom"
 // Social login popup handler 
 (window as any).onLogin = (sender: Window, params: { status: "Success" | "Failed", accessToken: string }) => {
   sender.close()
-  if (params.status === "Success") {
+  //make sure the sender dialog is in the same origin with the app
+  if (sender.location.origin === window.location.origin && params.status === "Success") {
     session.save()
     window.location.replace("/")
   }

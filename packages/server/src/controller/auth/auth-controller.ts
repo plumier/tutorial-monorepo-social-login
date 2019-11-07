@@ -48,7 +48,7 @@ export class AuthController {
     }
 
     @route.ignore()
-    private async loginOrRegister(status: "Success" | "Failed", state: string, user: Partial<User>, secret: string) {
+    private async loginOrRegister(status: "Success" | "Failed", state: string, secret: string, user: Partial<User>) {
         //verify the CSRF token stored in state parameter (see DialogsController)
         if (!new Token().verify(secret, state))
             return response.callbackView({ status: "Failed", message: "Invalid CSRF token" })
@@ -74,23 +74,35 @@ export class AuthController {
     @oAuthCallback(new FacebookProvider(process.env.FACEBOOK_CLIENT_ID, process.env.FACEBOOK_SECRET))
     async facebook(@bind.loginStatus() login: FacebookLoginStatus, state: string, @bind.cookie("csrf:key") secret: string) {
         const data = login.data || {} as FacebookProfile
-        const user: Partial<User> = { name: data.name, picture: data.picture.data.url, provider: "Facebook", socialId: data.id }
-        return this.loginOrRegister(login.status, state, user, secret)
+        return this.loginOrRegister(login.status, state, secret, {
+            name: data.name,
+            picture: data.picture.data.url,
+            provider: "Facebook",
+            socialId: data.id
+        })
     }
 
     //GET /auth/google
     @oAuthCallback(new GoogleProvider(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_SECRET))
     async google(@bind.loginStatus() login: GoogleLoginStatus, state: string, @bind.cookie("csrf:key") secret: string) {
         const data = login.data || {} as GoogleProfile
-        const user: Partial<User> = { name: data.name, picture: data.picture, provider: "Google", socialId: data.id }
-        return this.loginOrRegister(login.status, state, user, secret)
+        return this.loginOrRegister(login.status, state, secret, {
+            name: data.name,
+            picture: data.picture,
+            provider: "Google",
+            socialId: data.id
+        })
     }
 
     //GET /auth/github
     @oAuthCallback(new GitHubProvider(process.env.GITHUB_CLIENT_ID, process.env.GITHUB_SECRET))
     async github(@bind.loginStatus() login: GitHubLoginStatus, state: string, @bind.cookie("csrf:key") secret: string) {
         const data = login.data || {} as GitHubProfile
-        const user: Partial<User> = { name: data.name, picture: data.url, provider: "Github", socialId: data.id.toString() }
-        return this.loginOrRegister(login.status, state, user, secret)
+        return this.loginOrRegister(login.status, state, secret, {
+            name: data.name,
+            picture: data.url,
+            provider: "Github",
+            socialId: data.id.toString()
+        })
     }
 }

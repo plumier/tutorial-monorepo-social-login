@@ -8,16 +8,16 @@ import Tokens from "csrf"
 import { authorize, bind, response } from "plumier"
 
 //this controller provide social media auth endpoint that will be opened by a browser dialog
-//create CSRF secret token for each session, send the secret to the client cookie as a "ticket".
-//this ticket will be used to verify if current user is the authentic user requests the login.
+//create CSRF secret token for each session, send the secret to the client cookie as an identity.
+//this identity will be used to verify if current user is the authentic user requests the login.
 
 @authorize.public()
 export class DialogsController {
 
     //retrieve the csrf token secret as an identity 
-    identity(){
+    identity() {
         return response.json({})
-        .setCookie("csrf:key", new Tokens().secretSync())
+            .setCookie("csrf:key", new Tokens().secretSync())
     }
 
     @oAuthDialogEndPoint(new FacebookDialogProvider("/auth/facebook", process.env.FACEBOOK_CLIENT_ID))
