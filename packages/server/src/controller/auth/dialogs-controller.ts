@@ -14,6 +14,7 @@ import { authorize, bind, response } from "plumier"
 @authorize.public()
 export class DialogsController {
 
+    //ideally token secret identity should be sent on every
     //retrieve the csrf token secret as an identity 
     identity() {
         return response.json({})
