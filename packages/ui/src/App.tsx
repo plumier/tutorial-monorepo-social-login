@@ -13,6 +13,9 @@ export default function App() {
       <Route exact path="/" render={() => session.isAuthenticated() ? <Home /> : <Redirect to="/login" />} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="*">
+        <h1 className="text-404">Error 404 - The page you're looking for doesn't exists</h1>
+      </Route>
     </Switch>
   </Router>
 } 

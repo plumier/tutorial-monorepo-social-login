@@ -51,3 +51,8 @@ input[type=password]:focus{
 .link-button:focus {
 text-decoration: none;
 }
+
+.text-404 {
+  margin-top: 40px;
+  text-align: center;
+}
