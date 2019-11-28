@@ -39,7 +39,7 @@ export class User extends DomainBase {
         public name: string,
         @val.email()
         @val.unique()
-        public email:string,
+        public email: string,
         @val.optional()
         public picture: string,
         public password: string,
@@ -51,5 +51,7 @@ export class User extends DomainBase {
         public provider: "Facebook" | "Google" | "Github" | "Local"
     ) { super() }
 }
+
+export const userProjection = { password: 0 }
 
 export const UserModel = model(User)

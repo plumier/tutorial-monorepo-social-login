@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt"
 import { authorize, bind, route, val } from "plumier"
 
-import { LoginUser, User, UserModel } from "../../../model/model"
+import { LoginUser, User, UserModel, userProjection } from "../../../model/model"
 
 //custom validator to check if confirmedPassword is the same with password
 function verifyTheSame() {
@@ -24,6 +24,6 @@ export class UsersController {
 
     //GET /api/v1/users/me
     me(@bind.user() user: LoginUser) {
-        return UserModel.findById(user.userId)
+        return UserModel.findById(user.userId, userProjection)
     }
 }

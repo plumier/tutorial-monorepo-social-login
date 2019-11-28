@@ -5,10 +5,10 @@ import { authorize, response, route } from "plumier"
 
 export class HomeController {
 
-    //provide server side route to handle react route.
-    //thus when user refresh browser in specific route, it will keep in the correct url
     @authorize.public()
     @route.get("/")
+    //historyApiFallback https://plumierjs.com/docs/refs/serve-static#history-api-fallback
+    //to enable bookmark / in location refresh for SPA
     @route.historyApiFallback()
     index(){
         return response.file(join(__dirname, "../../../ui/build/index.html"))

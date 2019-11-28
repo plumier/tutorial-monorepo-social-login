@@ -9,6 +9,7 @@ import {
     GoogleProfile,
     GoogleProvider,
     oAuthCallback,
+    SocialLoginStatus,
 } from "@plumier/social-login"
 import bcrypt from "bcrypt"
 import Token from "csrf"
@@ -96,7 +97,7 @@ export class AuthController {
 
     //GET /auth/github
     @oAuthCallback(new GitHubProvider(process.env.GITHUB_CLIENT_ID, process.env.GITHUB_SECRET))
-    async github(@bind.loginStatus() login: GitHubLoginStatus, state: string, @bind.cookie("csrf:key") secret: string) {
+    async github(@bind.loginStatus() login: SocialLoginStatus<GitHubProfile>, state: string, @bind.cookie("csrf:key") secret: string) {
         const data = login.data || {} as GitHubProfile
         return this.loginOrRegister(login.status, state, secret, {
             name: data.name,
