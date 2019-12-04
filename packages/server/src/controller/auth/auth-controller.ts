@@ -2,7 +2,6 @@ import {
     FacebookLoginStatus,
     FacebookProfile,
     FacebookProvider,
-    GitHubLoginStatus,
     GitHubProfile,
     GitHubProvider,
     GoogleLoginStatus,
@@ -17,7 +16,7 @@ import { sign } from "jsonwebtoken"
 import { Document } from "mongoose"
 import { ActionResult, authorize, bind, HttpStatusError, response, route, val } from "plumier"
 
-import { LoginUser, User, UserModel } from "../../model/model"
+import { LoginUser, User, UserModel } from "../../model"
 
 export function signToken(user: User & Document) {
     return sign(<LoginUser>{ userId: user.id, role: user.role }, process.env.JWT_SECRET)
@@ -36,7 +35,7 @@ export class AuthController {
             return new ActionResult({ accessToken: token })
                 //Plumier automatically check for JWT if found cookie named "Authorization"
                 //by default HttpOnly cookie is true
-                .setCookie("Authorization", token, { sameSite: "strict" })
+                .setCookie("Authorization", token, { sameSite: "lax" })
         }
         else throw new HttpStatusError(422, "Invalid username or password")
     }
@@ -70,6 +69,18 @@ export class AuthController {
         else
             return response.callbackView({ status })
     }
+
+    
+
+    /*
+    these 3 methods below is the OAuth callback URI for each social media provider
+    @oAuthCallback is a middleware that will do the neat stuff:
+    1. Retrieve authorization `code` provided by the OAuth login dialog when redirect occur
+    2. Exchange authorization code into auth token 
+    3. Retrieve current login user profile using the auth token
+    4. Bind the user profile with appropriate login status into the parameter decorate with @bind.loginStatus()
+    */
+
 
     //GET /auth/facebook
     @oAuthCallback(new FacebookProvider(process.env.FACEBOOK_CLIENT_ID, process.env.FACEBOOK_SECRET))

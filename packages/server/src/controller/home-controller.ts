@@ -8,7 +8,7 @@ export class HomeController {
     @authorize.public()
     @route.get("/")
     //historyApiFallback https://plumierjs.com/docs/refs/serve-static#history-api-fallback
-    //to enable bookmark / in location refresh for SPA
+    //to enable bookmark and in location refresh for SPA
     @route.historyApiFallback()
     index(){
         return response.file(join(__dirname, "../../../ui/build/index.html"))

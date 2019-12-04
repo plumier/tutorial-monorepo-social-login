@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt"
 import { authorize, bind, route, val } from "plumier"
 
-import { LoginUser, User, UserModel, userProjection } from "../../../model/model"
+import { LoginUser, User, UserModel, userProjection } from "../../../model"
 
 //custom validator to check if confirmedPassword is the same with password
 function verifyTheSame() {

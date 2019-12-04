@@ -1,6 +1,6 @@
 import { route, val } from "plumier"
 
-import { Todo, TodoModel } from "../../../model/model"
+import { Todo, TodoModel } from "../../../model"
 
 export class TodosController {
     //GET /api/v1/todos?offset&limit

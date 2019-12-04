@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 import superagent from "superagent"
 import { Response, Test } from "supertest"
 
-import { LoginUser, UserRole } from "../../src/model/model"
+import { LoginUser, UserRole } from "../../src/model"
 
 
 

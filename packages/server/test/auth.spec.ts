@@ -2,7 +2,7 @@ import { verify } from "jsonwebtoken"
 import { ActionResult } from "plumier"
 
 import { AuthController } from "../src/controller/auth/auth-controller"
-import { LoginUser } from "../src/model/model"
+import { LoginUser } from "../src/model"
 import stub from "./helper/stub"
 import { AppStub, appStub } from "./helper/stub.app"
 import Token from "csrf"

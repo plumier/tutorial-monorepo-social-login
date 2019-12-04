@@ -1,0 +1,39 @@
+.container {
+  width: 800px;
+  margin: 40px auto;
+}
+
+@media (max-width: 800px) {
+  .container {
+    width: auto;
+  }
+}
+
+.header-container {
+  display: flex;
+  flex-direction: row;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  height: 40px;
+}
+
+.header-container .title {
+  flex-grow: 1;
+  margin-top: 0;
+  margin: 0;
+}
+.header-container .user {
+  display: flex;
+  flex-direction: row;
+}
+.user .name {
+  margin-left: 10px;
+}
+.avatar {
+  background-color: #ccc;
+  height: 40px;
+  width: 40px;
+  background-position: center;
+  background-size: 100%;
+  border-radius: 40px;
+}

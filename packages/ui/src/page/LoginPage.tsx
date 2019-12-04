@@ -1,26 +1,29 @@
 import "../style/Login.css"
 
 import Axios, { AxiosError } from "axios"
-import React, { FormEventHandler, useState, useEffect } from "react"
+import React, { FormEventHandler, useContext, useEffect, useState } from "react"
 import { useHistory } from "react-router"
-
-import session from "./session"
 import { Link } from "react-router-dom"
 
-// Social login popup handler 
-(window as any).onLogin = (sender: Window, params: { status: "Success" | "Failed", accessToken: string }) => {
-  sender.close()
-  //make sure the sender dialog is in the same origin with the app
-  if (sender.location.origin === window.location.origin && params.status === "Success") {
-    session.save()
-    window.location.replace("/")
-  }
-}
+import { LoginUserContext } from "../context"
+
 
 export default function Login() {
   const history = useHistory()
+  const [, setLogin] = useContext(LoginUserContext)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | undefined>()
+  const [error, setError] = useState<string | undefined>();
+
+  // Social login popup handler 
+  (window as any).onLogin = (sender: Window, params: { status: "Success" | "Failed" }) => {
+    sender.close()
+    //SECURITY PRACTICE
+    //make sure the sender dialog is in the same origin with the app
+    if (sender.location.origin === window.location.origin && params.status === "Success") {
+      setLogin(true)
+      history.replace("/")
+    }
+  }
 
   const onSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
@@ -28,7 +31,7 @@ export default function Login() {
     Axios.post("/auth/login", new FormData(e.currentTarget))
       .then(x => {
         setError(undefined)
-        session.save()
+        setLogin(true)
         history.replace("/")
       })
       .catch((e: AxiosError) => {
@@ -42,7 +45,7 @@ export default function Login() {
       })
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     setLoading(true)
     Axios.get("/auth/dialogs/identity")
       .then(() => setLoading(false))
@@ -55,15 +58,15 @@ export default function Login() {
     window.open(url, "Social Login", 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + y + ', left=' + x);
   }
 
-  const facebookDialog = async () => {
+  const facebookDialog = () => {
     dialog("/auth/dialogs/facebook")
   }
 
-  const googleDialog = async () => {
+  const googleDialog = () => {
     dialog("/auth/dialogs/google")
   }
 
-  const githubDialog = async () => {
+  const githubDialog = () => {
     dialog("/auth/dialogs/github")
   }
 

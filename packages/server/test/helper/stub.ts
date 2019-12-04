@@ -1,7 +1,7 @@
 import faker from "faker"
 import { Document, Model } from "mongoose"
 
-import { TodoModel, UserModel } from "../../src/model/model"
+import { TodoModel, UserModel } from "../../src/model"
 import { facebook } from "./stub.social"
 
 class Stub<T>{

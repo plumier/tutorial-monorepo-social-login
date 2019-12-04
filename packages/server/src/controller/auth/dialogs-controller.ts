@@ -7,34 +7,54 @@ import {
 import Tokens from "csrf"
 import { authorize, bind, response } from "plumier"
 
-//this controller provide social media auth endpoint that will be opened by a browser dialog
-//create CSRF secret token for each session, send the secret to the client cookie as an identity.
-//this identity will be used to verify if current user is the authentic user requests the login.
-
 @authorize.public()
 export class DialogsController {
 
+    /*
+    OAuth CSRF protection 
+    There are 3 important parts to note
+    1. Send the CSRF Token secret to the client as a cookie, by calling the
+       GET /auth/dialogs/identity from the login form
+    2. Generate CSRF token using the secret above on each auth dialog endpoint 
+       use the `state` parameter on the OAuth URL 
+    3. Validate the CSRF token on the OAuth callback url, see auth-controller.ts
+    */
+
+
+    //GET /auth/dialogs/identity
     //retrieve the csrf token secret as an identity 
     identity() {
         return response.json({})
             .setCookie("csrf:key", new Tokens().secretSync())
     }
 
-    @oAuthDialogEndPoint(new FacebookDialogProvider("/auth/facebook", process.env.FACEBOOK_CLIENT_ID))
+    /*
+    these 3 methods below provide the the OAuth dialog url for each social login provider.
+    @oAuthDialogEndPoint will automatically create the login url based on the DialogProvider 
+    the automatically redirect the request to the login url.
+    */
+
+
     //GET /auth/dialogs/facebook
+    @oAuthDialogEndPoint(new FacebookDialogProvider("/auth/facebook", process.env.FACEBOOK_CLIENT_ID))
     facebook(@bind.cookie("csrf:key") secret: string) {
+        //generate CSRF token based on CSRF secret provided by GET /auth/dialogs/identity
+        //pass the token to the state parameter. 
         return { state: new Tokens().create(secret) }
     }
 
-    @oAuthDialogEndPoint(new GoogleDialogProvider("/auth/google", process.env.GOOGLE_CLIENT_ID))
     //GET /auth/dialogs/google
+    @oAuthDialogEndPoint(new GoogleDialogProvider("/auth/google", process.env.GOOGLE_CLIENT_ID))
     google(@bind.cookie("csrf:key") secret: string) {
+        //generate CSRF token based on CSRF secret provided by GET /auth/dialogs/identity
         return { state: new Tokens().create(secret) }
     }
 
-    @oAuthDialogEndPoint(new GitHubDialogProvider("/auth/github", process.env.GITHUB_CLIENT_ID))
     //GET /auth/dialogs/github
+    @oAuthDialogEndPoint(new GitHubDialogProvider("/auth/github", process.env.GITHUB_CLIENT_ID))
     github(@bind.cookie("csrf:key") secret: string) {
+        //generate CSRF token based on CSRF secret provided by GET /auth/dialogs/identity
         return { state: new Tokens().create(secret) }
     }
 }
+

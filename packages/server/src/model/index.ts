@@ -1,5 +1,6 @@
 import { authorize, domain, val } from "@plumier/core"
 import { collection, model } from "@plumier/mongoose"
+import { checkConfirmPassword } from "../validator"
 
 
 export type UserRole = "Admin" | "User"
@@ -34,6 +35,7 @@ export class Todo extends DomainBase {
 export const TodoModel = model(Todo)
 
 @collection()
+@checkConfirmPassword()
 export class User extends DomainBase {
     constructor(
         public name: string,
