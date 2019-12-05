@@ -112,7 +112,7 @@ export class AuthController {
         const data = login.data || {} as GitHubProfile
         return this.loginOrRegister(login.status, state, secret, {
             name: data.name,
-            picture: data.url,
+            picture: data.avatar_url,
             provider: "Github",
             socialId: data.id.toString()
         })

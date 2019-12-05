@@ -42,7 +42,7 @@ describe("Users", () => {
                     .post(userUrl)
                     .send({ ...data, confirmPassword: "4545" })
                     .expect(422)
-                expect(body.message).toMatchObject([{ path: ["confirmPassword"], messages: ["Password doesn't match"] }])
+                expect(body.message).toMatchObject([{ path: ["data", "confirmPassword"], messages: ["Password doesn't match"] }])
             })
 
         })

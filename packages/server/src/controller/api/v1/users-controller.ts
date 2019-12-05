@@ -3,21 +3,13 @@ import { authorize, bind, route, val } from "plumier"
 
 import { LoginUser, User, UserModel, userProjection } from "../../../model"
 
-//custom validator to check if confirmedPassword is the same with password
-function verifyTheSame() {
-    return val.custom(async (x, { ctx }) => {
-        if (x !== ctx.request.body.password)
-            return "Password doesn't match"
-    })
-}
-
 export class UsersController {
 
     //POST /api/v1/users
     @authorize.public()
     @route.post("")
     
-    async save(data: User, @verifyTheSame() confirmPassword: string) {
+    async save(data: User) {
         data.password = await bcrypt.hash(data.password, 10)
         return UserModel.create(<User>{ ...data, role: "User" })
     }

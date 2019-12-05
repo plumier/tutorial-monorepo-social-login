@@ -13,11 +13,8 @@ export interface LoginUser {
 @domain()
 export class DomainBase {
     constructor(
-        @val.optional()
         public createdAt: Date = new Date(),
-        @val.optional()
         public updatedAt: Date = new Date(),
-        @val.optional()
         public deleted: boolean = false
     ) { }
 }
@@ -25,9 +22,9 @@ export class DomainBase {
 @collection()
 export class Todo extends DomainBase {
     constructor(
+        @val.required()
         @val.length({ max: 64 })
         public title: string,
-        @val.optional()
         public completed?: boolean
     ) { super() }
 }
@@ -38,11 +35,12 @@ export const TodoModel = model(Todo)
 @checkConfirmPassword()
 export class User extends DomainBase {
     constructor(
+        @val.required()
         public name: string,
+        @val.required()
         @val.email()
         @val.unique()
         public email: string,
-        @val.optional()
         public picture: string,
         public password: string,
         @authorize.role("Admin")
