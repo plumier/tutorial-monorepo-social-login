@@ -14,16 +14,20 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | undefined>();
 
-  // Social login popup handler 
-  (window as any).onLogin = (sender: Window, params: { status: "Success" | "Failed" }) => {
-    sender.close()
-    //SECURITY PRACTICE
-    //make sure the sender dialog is in the same origin with the app
-    if (sender.location.origin === window.location.origin && params.status === "Success") {
+  window.addEventListener("message", e => {
+    if (e.source && "close" in e.source) e.source.close()
+    if (e.origin === window.location.origin && e.data.status === "Success") {
       setLogin(true)
       history.replace("/")
     }
-  }
+  })
+
+  useEffect(() => {
+    setLoading(true)
+    Axios.get("/auth/csrf-secret")
+      .then(() => setLoading(false))
+      .catch(console.error)
+  }, [])
 
   const onSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault()
@@ -45,13 +49,6 @@ export default function Login() {
       })
   }
 
-  useEffect(() => {
-    setLoading(true)
-    Axios.get("/auth/dialogs/identity")
-      .then(() => setLoading(false))
-      .catch(console.error)
-  }, [])
-
   const dialog = (url: string, w = 600, h = 500) => {
     const y = window.top.outerHeight / 2 + window.top.screenY - (h / 2);
     const x = window.top.outerWidth / 2 + window.top.screenX - (w / 2);
@@ -59,15 +56,15 @@ export default function Login() {
   }
 
   const facebookDialog = () => {
-    dialog("/auth/dialogs/facebook")
+    dialog("/auth/facebook/login")
   }
 
   const googleDialog = () => {
-    dialog("/auth/dialogs/google")
+    dialog("/auth/google/login")
   }
 
   const githubDialog = () => {
-    dialog("/auth/dialogs/github")
+    dialog("/auth/github/login")
   }
 
   return <div className="login-container">

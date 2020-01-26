@@ -48,7 +48,7 @@ export class User extends DomainBase {
         @authorize.role("Admin")
         public socialId: string,
         @authorize.role("Admin")
-        public provider: "Facebook" | "Google" | "Github" | "Local"
+        public provider: "Facebook" | "Google" | "GitHub" | "Local"
     ) { super() }
 }
 
