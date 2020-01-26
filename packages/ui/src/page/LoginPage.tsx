@@ -15,8 +15,8 @@ export default function Login() {
   const [error, setError] = useState<string | undefined>();
 
   window.addEventListener("message", e => {
-    if (e.source && "close" in e.source) e.source.close()
     if (e.origin === window.location.origin && e.data.status === "Success") {
+      if (e.source && "close" in e.source) e.source.close()
       setLogin(true)
       history.replace("/")
     }
