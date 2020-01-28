@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 import { authorize, bind, route, val } from "plumier"
 
 import { LoginUser, User, UserModel, userProjection } from "../../../model"

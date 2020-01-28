@@ -1,5 +1,5 @@
 import { OAuthUser, redirectUri } from "@plumier/social-login"
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 import { sign } from "jsonwebtoken"
 import { Document } from "mongoose"
 import { ActionResult, authorize, bind, HttpStatusError, response, route, val } from "plumier"
